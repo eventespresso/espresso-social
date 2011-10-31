@@ -3,7 +3,7 @@
 Plugin Name: Event Espresso - Social Media
 Plugin URI: http://www.eventespresso.com
 Description: A social media addon for Event Espresso. Includes includes Facebook and Twitter share buttons.
-Version: 1.0.1
+Version: 1.1.1
 Usage: Add <?php echo espresso_show_social_media($event_id, 'twitter');?> and/or <?php echo espresso_show_social_media($event_id, 'facebook');?> to display  Twitter or Facebook buttons in your event templates.
 Example: <p><?php echo espresso_show_social_media($event_id, 'twitter');?> <?php echo espresso_show_social_media($event_id, 'facebook');?></p>
 Author: Seth Shoultes
@@ -26,7 +26,7 @@ Copyright 2010  Seth Shoultes  (email : seth@eventespresso.com)
 
 //Define the version of the plugin
 function espresso_social_version() {
-	return '1.1';
+	return '1.1.1';
 }
 define("ESPRESSO_SOCIAL_VERSION", espresso_social_version() );
 
@@ -42,9 +42,12 @@ $espresso_facebook = get_option('espresso_facebook_settings');
 global $espresso_twitter;
 $espresso_twitter = get_option('espresso_twitter_settings');
 
+global $espresso_google;
+$espresso_google = get_option('espresso_google_settings');
+
 //Install the plugin
 function espresso_social_install(){
-	//Install Facebook Options
+	// Install Facebook Options
 	$espresso_facebook = array(
 					'espresso_facebook_layout' => 'button_count',
 					'espresso_facebook_faces' => 'true',
@@ -56,7 +59,7 @@ function espresso_social_install(){
 				);
 	add_option( 'espresso_facebook_settings', $espresso_facebook );
 	
-	//Install Twitter Options
+	// Install Twitter Options
 	$espresso_twitter = array(
 					'espresso_twitter_text' => get_bloginfo('name'),
 					'espresso_twitter_username' => 'EventEspresso',
@@ -64,15 +67,23 @@ function espresso_social_install(){
 					'espresso_twitter_lang' => 'en'
 				);
 	add_option( 'espresso_twitter_settings', $espresso_twitter );
-}
-register_activation_hook(__FILE__,'espresso_social_install');
+
+	// Install  google+1 options
+	$espresso_google = array(
+				'espresso_google_button_size' => 'small',
+				'espresso_google_url' => '',
+				'espresso_google_annotation' => 'bubble'
+				);
+	update_option( 'espresso_google_settings', $espresso_google);
+}	
+register_activation_hook(__FILE__, 'espresso_social_install');
 
 function espresso_social_config_mnu()	{
 	global $wpdb, $espresso_twitter, $espresso_facebook;
 	
 	/*Facebok*/
 	function espresso_facebook_updated(){
-	return __('Facebook details saved.','event_espresso');
+	echo '<div class="updated fade"><p>' .  __('Facebook details saved.','event_espresso') . '</p></div>';
 	}
 	
 	if (isset($_POST['update_facebook'])) {
@@ -91,7 +102,7 @@ function espresso_social_config_mnu()	{
 	
 	/*Twitter*/
 	function espresso_twitter_updated(){
-	return __('Twitter details saved.','event_espresso');
+	echo '<div class="updated fade"><p>'.  __('Twitter details saved.','event_espresso') . '</p></div>';
 	}
 
 	if (isset($_POST['update_twitter'])) {
@@ -105,14 +116,32 @@ function espresso_social_config_mnu()	{
 	}
 
 	$espresso_twitter = get_option('espresso_twitter_settings');
+
+	/*Google*/
+	function espresso_google_updated(){
+	echo '<div class="updated fade"><p>'. __('Google details saved.','event_espresso') . '</p></div>';
+	}
+		
+	if ( isset($_POST['update_google']) ){
+		$espresso_google['espresso_google_button_size'] = $_POST['espresso_google_button_size'];
+		$espresso_google['espresso_google_url'] = $_POST['espresso_google_url'];
+		$espresso_google['espresso_google_annotation'] = $_POST['espresso_google_annotation'];
+		
+		update_option('espresso_google_settings', $espresso_google);
+		add_action('admin_notices', 'espresso_google_updated');
+	}
+		
+	$espresso_google = get_option('espresso_google_settings');
+
 ?>
 
-<div id="configure_organization_form" class="wrap meta-box-sortables ui-sortable">
+<div id="configure_organization_form" class="wrap meta-box-sortables ui-sortable clearfix">
   
  <div id="icon-options-event" class="icon32"> </div>
  <h2>
     <?php _e('Event Espresso - Social Media Settings','event_espresso'); ?>
  </h2>
+	<?php do_action('admin_notices')?>
  <!-- include right sidebar  -->
 		
  <div id="poststuff" class="metabox-holder has-right-sidebar">
@@ -300,7 +329,64 @@ function espresso_social_config_mnu()	{
 									</div><!-- / .postbox -->
 								</div><!-- / .metabox-holder -->    
     <!-- #### end twitter settings #### -->
-    
+
+    <!-- #### Google+1 settings #### -->   
+								<div class="metabox-holder">
+									<div class="postbox">
+										<div title="Click to toggle" class="handlediv"><br /></div>
+										<h3 class="hndle">
+												<?php _e('Google+1  Settings ', 'event_espresso'); ?>
+										</h3>
+										<div class="inside">
+											<div class="padding">
+											 <form class="espresso_form" method="post" action="<?php echo $_SERVER['REQUEST_URI']?>">
+												
+             <ul id="event_espresso-google">
+
+              <li>
+               <label for="espresso_google_button_size">
+                <?php _e('Google Button size:','event_espresso'); ?>
+               </label>
+               <?php
+               $values=array(
+               array('id'=>'small','text'=> __('Small (15px)','event_espresso')),					
+               array('id'=>'medium','text'=> __('Medium (20px)','event_espresso')),
+               array('id'=>'standard','text'=> __('Standard (24px)','event_espresso')),
+															array('id'=>'tall','text'=> __('Tall (60px)','event_espresso'))
+               );				
+               echo select_input('espresso_google_button_size', $values, $espresso_google['espresso_google_button_size'], 'id="espresso_google_button_size"');
+               ?>
+              </li>
+
+              <li>
+               <label for="espresso_google_annotation">
+                <?php _e('Google text display:','event_espresso'); ?>
+               </label>
+               <?php
+               $values=array(
+               array('id'=>'none','text'=> __('No Text','event_espresso')),					
+               array('id'=>'inline','text'=> __('Inline Text','event_espresso')),
+               array('id'=>'bubble','text'=> __('In Speech Bubble','event_espresso'))
+               );	
+               echo select_input('espresso_google_annotation', $values, $espresso_google['espresso_google_annotation'], 'id="espresso_google_annotation"');
+               ?>
+              </li>
+																												
+              <li> 
+                <input type="hidden" name="update_google" value="update" />
+                <p>
+                 <input class="button-primary" type="submit" name="Submit" value="<?php _e('Save Google Options', 'event_espresso'); ?>" id="save_google_settings" />
+                </p>
+              </li>
+																																								
+												 </ul>
+												</form>
+											</div><!-- / .padding -->
+										</div><!-- / .inside -->
+									</div><!-- / .postbox -->
+								</div><!-- / .metabox-holder -->
+					<!-- #### End Google+1 settings #### -->
+																			    
 	<?php  include_once('social-media_help.php'); ?>
      </div><!-- / .meta-box-sortables -->
     </div><!-- / #post-body-content -->
@@ -392,3 +478,34 @@ if (!function_exists('espresso_twitter_button_shortcode')) {
 	}
 }
 add_shortcode('ESPRESSO_TWITTER', 'espresso_twitter_button_shortcode');
+
+/******************
+* Google+1 button *
+*******************/
+if (!function_exists('espresso_google_button')) {
+	// Override this function using the Custom Files Addon (http://eventespresso.com/download/add-ons/custom-files-addon/)
+	function espresso_google_button ($event_id){
+		global $wpdb, $org_options, $espresso_google;
+		
+		if($espresso_google['espresso_google_annotation'] == 'none')
+		 $annotation = 'data-annotation="none"';
+		if($espresso_google['espresso_google_annotation'] == 'inline')
+		 $annotation = 'data-annotation="inline"';
+		if($espresso_google['espresso_google_annotation'] == 'bubble')
+		 $annotation = '';
+		
+		$registration_url = espresso_reg_url($event_id); //get_option('siteurl') . '/?ee='. $event_id;
+		$g_button = '<div class="g-plusone" href="' . $registration_url . '" data-href="' . $registration_url . '" data-size="' . $espresso_google['espresso_google_button_size'] . '"' . $annotation . '></div>';	
+		$g_button .= '<script type="text/javascript">
+  		(function() {
+    		var po = document.createElement(\'script\'); po.type = \'text/javascript\'; po.async = true;
+    		po.src = \'https://apis.google.com/js/plusone.js\';
+    		var s = document.getElementsByTagName(\'script\')[0]; s.parentNode.insertBefore(po, s);
+  		})();
+			</script>';
+		
+			return $g_button; ;
+
+		
+	}
+}	
