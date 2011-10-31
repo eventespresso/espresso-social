@@ -3,7 +3,7 @@
 Plugin Name: Event Espresso - Social Media
 Plugin URI: http://www.eventespresso.com
 Description: A social media addon for Event Espresso. Includes includes Facebook and Twitter share buttons.
-Version: 1.1.1
+Version: 1.1
 Usage: Add <?php echo espresso_show_social_media($event_id, 'twitter');?> and/or <?php echo espresso_show_social_media($event_id, 'facebook');?> to display  Twitter or Facebook buttons in your event templates.
 Example: <p><?php echo espresso_show_social_media($event_id, 'twitter');?> <?php echo espresso_show_social_media($event_id, 'facebook');?></p>
 Author: Seth Shoultes
@@ -26,7 +26,7 @@ Copyright 2010  Seth Shoultes  (email : seth@eventespresso.com)
 
 //Define the version of the plugin
 function espresso_social_version() {
-	return '1.1.1';
+	return '1.1';
 }
 define("ESPRESSO_SOCIAL_VERSION", espresso_social_version() );
 
@@ -44,6 +44,9 @@ $espresso_twitter = get_option('espresso_twitter_settings');
 
 global $espresso_google;
 $espresso_google = get_option('espresso_google_settings');
+
+global $espresso_stumbleupon;
+$espresso_stumbleupon = get_option('espresso_stumbleupon_settings');
 
 //Install the plugin
 function espresso_social_install(){
@@ -75,11 +78,18 @@ function espresso_social_install(){
 				'espresso_google_annotation' => 'bubble'
 				);
 	update_option( 'espresso_google_settings', $espresso_google);
+	
+ // Install  stumbleupon options
+	$espresso_stumbleupon = array(
+				'espresso_stumbleupon_button_style' => '2',
+				'espresso_stumbleupon_button_url' => ''
+				);	
+	update_option('espresso_stumbleupon_settings', $espresso_stumbleupon);
 }	
 register_activation_hook(__FILE__, 'espresso_social_install');
 
 function espresso_social_config_mnu()	{
-	global $wpdb, $espresso_twitter, $espresso_facebook;
+	global $wpdb, $espresso_twitter, $espresso_facebook, $espresso_google;
 	
 	/*Facebok*/
 	function espresso_facebook_updated(){
@@ -132,6 +142,21 @@ function espresso_social_config_mnu()	{
 	}
 		
 	$espresso_google = get_option('espresso_google_settings');
+	
+	/*Stumbleupon*/
+	function espresso_stumbleupon_updated(){
+	echo '<div class="updated fade"><p>'. __('Stumbleupon details saved.','event_espresso') . '</p></div>';
+	}
+		
+	if ( isset($_POST['update_stumbleupon']) ){
+		$espresso_stumbleupon['espresso_stumbleupon_button_style'] = $_POST['espresso_stumbleupon_button_style'];
+		$espresso_stumbleupon['espresso_stumbleupon_url'] = $_POST['espresso_stumbleupon_url'];
+		
+		update_option('espresso_stumbleupon_settings', $espresso_stumbleupon);
+		add_action('admin_notices', 'espresso_stumbleupon_updated');
+	}
+		
+	$espresso_stumbleupon = get_option('espresso_stumbleupon_settings');	
 
 ?>
 
@@ -386,6 +411,51 @@ function espresso_social_config_mnu()	{
 									</div><!-- / .postbox -->
 								</div><!-- / .metabox-holder -->
 					<!-- #### End Google+1 settings #### -->
+					
+    <!-- #### Google+1 settings #### -->   
+								<div class="metabox-holder">
+									<div class="postbox">
+										<div title="Click to toggle" class="handlediv"><br /></div>
+										<h3 class="hndle">
+												<?php _e('Stumbleupon  Settings ', 'event_espresso'); ?>
+										</h3>
+										<div class="inside">
+											<div class="padding">
+											 <form class="espresso_form" method="post" action="<?php echo $_SERVER['REQUEST_URI']?>">
+												
+             <ul id="event_espresso-stumbleupon">
+
+              <li>
+               <label for="espresso_stumbleupon_button_style">
+                <?php _e('Stumbleupon button styles:','event_espresso'); ?>
+               </label>
+               <?php
+               $values=array(
+               array('id'=>'1','text'=> __('Small (square text box)','event_espresso')),					
+               array('id'=>'2','text'=> __('Small (round text box)','event_espresso')),
+               array('id'=>'3','text'=> __('Small (plain text)','event_espresso')),
+															array('id'=>'5','text'=> __('Large (square text box)','event_espresso')),
+															array('id'=>'4','text'=> __('Small (no text)','event_espresso')),
+															array('id'=>'6','text'=> __('Large (no text)','event_espresso'))
+               );				
+               echo select_input('espresso_stumbleupon_button_style', $values, $espresso_stumbleupon['espresso_stumbleupon_button_style'], 'id="espresso_stumbleupon_button_style"');
+               ?>
+              </li>
+																												
+              <li> 
+                <input type="hidden" name="update_stumbleupon" value="update" />
+                <p>
+                 <input class="button-primary" type="submit" name="Submit" value="<?php _e('Save Stumbleupon Options', 'event_espresso'); ?>" id="save_google_settings" />
+                </p>
+              </li>
+																																								
+												 </ul>
+												</form>
+											</div><!-- / .padding -->
+										</div><!-- / .inside -->
+									</div><!-- / .postbox -->
+								</div><!-- / .metabox-holder -->
+					<!-- #### End stumbleupon settings #### -->					
 																			    
 	<?php  include_once('social-media_help.php'); ?>
      </div><!-- / .meta-box-sortables -->
@@ -413,7 +483,7 @@ if (!function_exists('espresso_facebook_button')) {
 		global $org_options, $espresso_facebook;
 		
 		//Build the URl to the page
-		$registration_url = get_option('siteurl') . '/?ee='. $event_id;
+		$registration_url = espresso_reg_url($event_id); //get_option('siteurl') . '/?ee='. $event_id;
 	
 		$button = '<iframe src="http://www.facebook.com/plugins/like.php?href='.$registration_url.'&amp;layout=' . $espresso_facebook['espresso_facebook_layout'] . '&amp;show_faces=' . $espresso_facebook['espresso_facebook_faces'] . '&amp;width=' . $espresso_facebook['espresso_facebook_width'] . '&amp;action=' . $espresso_facebook['espresso_facebook_action'] . '&amp;font=' . $espresso_facebook['espresso_facebook_font'] . '&amp;colorscheme=' . $espresso_facebook['espresso_facebook_colorscheme'] . '&amp;height=' . $espresso_facebook['espresso_facebook_height'] . '" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:' . $espresso_facebook['espresso_facebook_width'] . 'px; height:' . $espresso_facebook['espresso_facebook_height'] . 'px;" allowTransparency="true"></iframe>';
 		
@@ -431,7 +501,7 @@ if (!function_exists('espresso_twitter_button')) {
 		global $wpdb, $org_options, $espresso_twitter;
 		
 		//Build the URl to the page
-		$registration_url = get_option('siteurl') . '/?ee='. $event_id;
+		$registration_url = espresso_reg_url($event_id); //get_option('siteurl') . '/?ee='. $event_id;
 		
 		$button = '<a href="http://twitter.com/share" class="twitter-share-button" data-url="' . $registration_url . '" data-text="' . $espresso_twitter['espresso_twitter_text'] . '" data-count="' . $espresso_twitter['espresso_twitter_count_box'] . '" data-via="' . $espresso_twitter['espresso_twitter_username'] . '" data-lang="' . $espresso_twitter['espresso_twitter_lang'] . '">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>';
 		return $button;
@@ -508,4 +578,20 @@ if (!function_exists('espresso_google_button')) {
 
 		
 	}
-}	
+}
+/****************
+* Stumbleupon *
+*****************/	
+if (!function_exists('espresso_stumbleupon_button')) {
+	// Override this function using the Custom Files Addon (http://eventespresso.com/download/add-ons/custom-files-addon/)
+	function espresso_stumbleupon_button ($event_id){
+		global $wpdb, $org_options, $espresso_stumbleupon;
+		
+		$registration_url = espresso_reg_url($event_id);
+		$size = $espresso_stumbleupon['espresso_stumbleupon_button_style'];
+		
+		$button = '<script src="http://www.stumbleupon.com/hostedbadge.php?s=' . $size . '&r=' . $registration_url . '"></script>';
+		
+		return $button;
+	}
+}		
