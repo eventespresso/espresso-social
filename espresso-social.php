@@ -161,308 +161,333 @@ function espresso_social_config_mnu()	{
 ?>
 
 <div id="configure_organization_form" class="wrap meta-box-sortables ui-sortable clearfix">
-  
- <div id="icon-options-event" class="icon32"> </div>
- <h2>
-    <?php _e('Event Espresso - Social Media Settings','event_espresso'); ?>
- </h2>
+
+<div id="icon-options-event" class="icon32"> </div>
+	<h2>
+		<?php _e('Event Espresso - Social Media Settings','event_espresso'); ?>
+	</h2>
 	<?php do_action('admin_notices')?>
- <!-- include right sidebar  -->
+<!-- include right sidebar  -->
 		
- <div id="poststuff" class="metabox-holder has-right-sidebar">
+	<div id="poststuff" class="metabox-holder has-right-sidebar">
 	<?php event_espresso_display_right_column(); ?>
 		<div id="post-body">
-			<div id="post-body-content">  
- 
- <!-- begin left column metaboxes  -->
- 			<div class="meta-box-sortables ui-sortables">
-  
-  <!-- #### Start Facebook settings #### -->
-						<div class="metabox-holder">
-								<div class="postbox">
-									<div title="Click to toggle" class="handlediv"><br /></div>
-									<h3 class="hndle">
-											<?php _e('Facebook Settings ', 'event_espresso'); ?>
-									</h3>
-									<div class="inside">
-										<div class="padding">  
-           <p class="section-heading"><?php _e('Configure your Facebook account settings ', 'event_espresso') ?><a class="thickbox"  href="#TB_inline?height=400&amp;width=500&amp;inlineId=facebook_info" target="_blank"><img src="<?php echo EVENT_ESPRESSO_PLUGINFULLURL ?>images/question-frame.png" width="16" height="16" alt="" /></a></p>  
+			<div id="post-body-content">
+			
+	<!-- begin left column metaboxes  -->
+				<div class="meta-box-sortables ui-sortables">
 
-            <form class="espresso_form" method="post" action="<?php echo $_SERVER['REQUEST_URI']?>">
-            
-             <ul id="event_espresso-facebook">
+<!--  Start Facebook settings  -->
+				<div class="metabox-holder">
+					<div class="postbox">
+						<div title="Click to toggle" class="handlediv"><br /></div>
+						<h3 class="hndle">
+						<?php _e('Facebook Settings ', 'event_espresso'); ?>
+						</h3>
+						<div class="inside">
+							<div class="padding">  
+							<p class="section-heading"><?php _e('Configure your Facebook account settings ', 'event_espresso') ?><a class="thickbox"  href="#TB_inline?height=400&amp;width=500&amp;inlineId=facebook_info" target="_blank"><img src="<?php echo EVENT_ESPRESSO_PLUGINFULLURL ?>images/question-frame.png" width="16" height="16" alt="" /></a></p>
+							<form class="espresso_form" method="post" action="<?php echo $_SERVER['REQUEST_URI']?>">
+								<table id="event_espresso-facebook" class="form-table">
+								<tbody>
+									<tr>
+										<th>
+											<label for="espresso_facebook_layout">
+												<?php _e('Layout Style:','event_espresso'); ?>
+											</label>
+										</th>
+										<td>
+										<?php
+										$values=array(
+											array('id'=>'button_count','text'=> __('Button Count','event_espresso')),					
+											array('id'=>'standard','text'=> __('Standard','event_espresso')),
+											array('id'=>'box_count','text'=> __('Box Count','event_espresso'))
+											);				
+											echo select_input('espresso_facebook_layout', $values, $espresso_facebook['espresso_facebook_layout'], 'id="espresso_facebook_layout"');
+											?>
+										</td>
+									</tr>
+									<tr>
+										<th>
+											<label for="espresso_facebook_faces">
+											 <?php _e('Show Faces:','event_espresso'); ?>
+											</label>
+										</th>
+										<td>
+											<?php
+											$values=array(
+												array('id'=>'true','text'=> __('Yes','event_espresso')),
+												array('id'=>'false','text'=> __('No','event_espresso'))
+											);
+											echo select_input('espresso_facebook_faces', $values, $espresso_facebook['espresso_facebook_faces'], 'id="espresso_facebook_faces"');
+											?>
+										</td>
+										</tr>
+										<tr>
+											<th>
+												<label for="espresso_facebook_font">
+													<?php _e('Font:','event_espresso'); ?>
+												</label>
+											</th>
+											<td>
+												<?php
+												$values=array(
+													array('id'=>'arial','text'=> __('arial','event_espresso')),
+													array('id'=>'lucida grande','text'=> __('lucida grande','event_espresso')),
+													array('id'=>'segoe ui','text'=> __('segoe ui','event_espresso')),
+													array('id'=>'tahoma','text'=> __('tahoma','event_espresso')),
+													array('id'=>'trebuchet ms','text'=> __('trebuchet ms','event_espresso')),
+													array('id'=>'verdana','text'=> __('verdana','event_espresso'))
+												);
+												echo select_input('espresso_facebook_font', $values, $espresso_facebook['espresso_facebook_font'], 'id="espresso_facebook_font"');
+												?>
+											</td>
+										</tr>
+										<tr>
+											<th>
+												<label for="espresso_facebook_colorscheme">
+													<?php _e('Color Scheme:','event_espresso'); ?>
+												</label>
+											</th>
+											<td>
+											<?php
+											$values=array(
+												array('id'=>'light','text'=> __('Light','event_espresso')),
+												array('id'=>'dark','text'=> __('Dark','event_espresso'))
+											);
+											echo select_input('espresso_facebook_colorscheme', $values, $espresso_facebook['espresso_facebook_colorscheme'], 'id="espresso_facebook_colorscheme"');
+											?>
+										</td>
+									</tr>
+									<tr>
+										<th>
+											<label for="espresso_facebook_height">
+												<?php _e('Height:','event_espresso'); ?>
+											</label>
+										</th>
+										<td>
+											<input id="espresso_facebook_height" type="text" name="espresso_facebook_height" size="100" maxlength="100" value="<?php echo $espresso_facebook['espresso_facebook_height'];?>" />
+										</td>
+									</tr>
+									<tr>
+										<th>
+											<label for="espresso_facebook_width">
+												<?php _e('Width:','event_espresso'); ?>
+											</label>
+										</th>
+										<td>
+											<input id="espresso_facebook_width" type="text" name="espresso_facebook_width" size="100" maxlength="100" value="<?php echo $espresso_facebook['espresso_facebook_width'];?>" />
+										</td>
+									</tr>
+								</tbody>
+							</table>
+							<p>
+								<input type="hidden" name="update_facebook" value="update" />
+								<input class="button-primary" type="submit" name="Submit" value="<?php _e('Save Facebook Options', 'event_espresso'); ?>" id="save_facebook_settings" />
+							</p>
+					</form>
 
-              <li>
-               <label for="espresso_facebook_layout">
-                <?php _e('Layout Style:','event_espresso'); ?>
-               </label>
-               <?php
-               $values=array(
-               array('id'=>'button_count','text'=> __('Button Count','event_espresso')),					
-               array('id'=>'standard','text'=> __('Standard','event_espresso')),
-               array('id'=>'box_count','text'=> __('Box Count','event_espresso'))
-               );				
-               echo select_input('espresso_facebook_layout', $values, $espresso_facebook['espresso_facebook_layout'], 'id="espresso_facebook_layout"');
-               ?>
-              </li>
-              
-              <li>
-               <label for="espresso_facebook_faces">
-                <?php _e('Show Faces:','event_espresso'); ?>
-               </label>
-               <?php
-               $values=array(					
-               array('id'=>'true','text'=> __('Yes','event_espresso')),
-               array('id'=>'false','text'=> __('No','event_espresso'))
-               );				
-               echo select_input('espresso_facebook_faces', $values, $espresso_facebook['espresso_facebook_faces'], 'id="espresso_facebook_faces"');
-               ?>
-              </li>
+				</div><!-- / .padding -->
+			</div><!-- / .inside -->
+		</div><!-- / .postbox -->
+</div><!-- / .metabox-holder -->
+<!--  end Facebook settings  -->
 
-              <li>
-               <label for="espresso_facebook_font">
-                <?php _e('Font:','event_espresso'); ?>
-               </label>
-               <?php
-               $values=array(					
-               array('id'=>'arial','text'=> __('arial','event_espresso')),
-               array('id'=>'lucida grande','text'=> __('lucida grande','event_espresso')),
-               array('id'=>'segoe ui','text'=> __('segoe ui','event_espresso')),
-               array('id'=>'tahoma','text'=> __('tahoma','event_espresso')),
-               array('id'=>'trebuchet ms','text'=> __('trebuchet ms','event_espresso')),
-               array('id'=>'verdana','text'=> __('verdana','event_espresso'))
-               );				
-               echo select_input('espresso_facebook_font', $values, $espresso_facebook['espresso_facebook_font'], 'id="espresso_facebook_font"');
-               ?>
-              </li>
-              
-              <li>
-               <label for="espresso_facebook_colorscheme">
-                <?php _e('Color Scheme:','event_espresso'); ?>
-               </label>
-               <?php
-               $values=array(					
-               array('id'=>'light','text'=> __('Light','event_espresso')),
-               array('id'=>'dark','text'=> __('Dark','event_espresso'))
-               );				
-               echo select_input('espresso_facebook_colorscheme', $values, $espresso_facebook['espresso_facebook_colorscheme'], 'id="espresso_facebook_colorscheme"');
-               ?>
-              </li>
-              
-              <li>
-               <label for="espresso_facebook_height">
-                <?php _e('Height:','event_espresso'); ?>
-               </label>
-               <input id="espresso_facebook_height" type="text" name="espresso_facebook_height" size="100" maxlength="100" value="<?php echo $espresso_facebook['espresso_facebook_height'];?>" />
-              </li>
-              
-              <li>
-               <label for="espresso_facebook_width">
-                <?php _e('Width:','event_espresso'); ?>
-               </label>
-               <input id="espresso_facebook_width" type="text" name="espresso_facebook_width" size="100" maxlength="100" value="<?php echo $espresso_facebook['espresso_facebook_width'];?>" />
-              </li>
+<!--  Twitter settings  -->
+		<div class="metabox-holder">
+		<div class="postbox">
+		<div title="Click to toggle" class="handlediv"><br /></div>
+		<h3 class="hndle">
+			<?php _e('Twitter Settings ', 'event_espresso'); ?>
+		</h3>
+		<div class="inside">
+			<div class="padding">
+				<p class="section-heading"><?php _e('Configure your Twitter account settings ', 'event_espresso') ?><?php apply_filters('espresso_help', 'twitter_info') ?></p>
+				<form class="espresso_form" method="post" action="<?php echo $_SERVER['REQUEST_URI']?>">
+					<table id="event_espresso-facebook" class="form-table">
+						<tbody>
+							<tr>
+								<th>
+									<label for="espresso_twitter_username">
+										<?php _e('Twitter Username:','event_espresso'); ?>
+									</label>
+								</th>
+								<td>
+									<input id="espresso_twitter_username" type="text" name="espresso_twitter_username" size="30" maxlength="20" value="<?php echo $espresso_twitter['espresso_twitter_username'];?>" />
+								</td>
+							</tr>
+							<tr>
+								<th>
+									<label for="espresso_twitter_text">
+										<?php _e('Default Twitter Text:','event_espresso'); ?>
+									</label>
+								</th>
+								<td>
+									<input id="espresso_twitter_text" type="text" name="espresso_twitter_text" size="100" maxlength="100" value="<?php echo stripslashes_deep($espresso_twitter['espresso_twitter_text']);?>" />
+								</td>
+							</tr>
+							<tr>
+								<th>
+									<label for="espresso_twitter_count_box">
+										<?php _e('Count Box Position:','event_espresso'); ?>
+									</label>
+								</th>
+								<td>
+								<?php
+								$values=array(					
+									array('id'=>'none','text'=> __('None','event_espresso')),
+									array('id'=>'horizontal','text'=> __('Horizontal','event_espresso')),
+									array('id'=>'vertical','text'=> __('Vertical','event_espresso'))
+								);
+								echo select_input('espresso_twitter_count_box', $values, $espresso_twitter['espresso_twitter_count_box'], 'id="espresso_twitter_count_box"');
+								?>
+								</td>
+							</tr>
+							<tr>
+								<th>
+									<label for="espresso_twitter_lang">
+										<?php _e('The language for the Tweet Button:','event_espresso'); ?>
+									</label>
+								</th>
+								<td>
+								<?php
+								$values=array(
+									array('id'=>'en','text'=> __('English','event_espresso')),
+									array('id'=>'da','text'=> __('Danish','event_espresso')),
+									array('id'=>'dl','text'=> __('Dutch','event_espresso')),
+									array('id'=>'fr','text'=> __('French','event_espresso')),
+									array('id'=>'de','text'=> __('German','event_espresso')),
+									array('id'=>'es','text'=> __('Spanish','event_espresso'))
+								);
+								echo select_input('espresso_twitter_lang', $values, $espresso_twitter['espresso_twitter_lang'], 'id="espresso_twitter_lang"');
+								?>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<p>
+					<input type="hidden" name="update_twitter" value="update" />
+					<input class="button-primary" type="submit" name="Submit" value="<?php _e('Save Twitter Options', 'event_espresso'); ?>" id="save_twitter_settings" />
+				</p>
+			</form>
 
-              <li>
-               <input type="hidden" name="update_facebook" value="update" />
-               <p>
-                <input class="button-primary" type="submit" name="Submit" value="<?php _e('Save Facebook Options', 'event_espresso'); ?>" id="save_facebook_settings" />
-               </p>
-              </li>
+			</div><!-- / .padding -->
+		</div><!-- / .inside -->
+	</div><!-- / .postbox -->
+	</div><!-- / .metabox-holder -->
+<!--  end twitter settings  -->
 
-             </ul>
+<!--  Google+1 settings  --> 
+	<div class="metabox-holder">
+		<div class="postbox">
+		<div title="Click to toggle" class="handlediv"><br /></div>
+			<h3 class="hndle">
+				<?php _e('Google+1  Settings ', 'event_espresso'); ?>
+			</h3>
+			<div class="inside">
+				<div class="padding">
+					<form class="espresso_form" method="post" action="<?php echo $_SERVER['REQUEST_URI']?>">
+					<table id="event_espresso-facebook" class="form-table">
+						<tbody>
+							<tr>
+								<th>
+									<label for="espresso_google_button_size">
+										<?php _e('Google Button size:','event_espresso'); ?>
+									</label>
+								</th>
+								<td>
+								<?php
+								$values=array(
+									array('id'=>'small','text'=> __('Small (15px)','event_espresso')),					
+									array('id'=>'medium','text'=> __('Medium (20px)','event_espresso')),
+									array('id'=>'standard','text'=> __('Standard (24px)','event_espresso')),
+									array('id'=>'tall','text'=> __('Tall (60px)','event_espresso'))
+								);
+								echo select_input('espresso_google_button_size', $values, $espresso_google['espresso_google_button_size'], 'id="espresso_google_button_size"');
+								?>
+								</td>
+							</tr>
+							<tr>
+								<th>
+									<label for="espresso_google_annotation">
+										<?php _e('Google text display:','event_espresso'); ?>
+									</label>
+								</th>
+								<td>
+								<?php
+									$values=array(
+										array('id'=>'none','text'=> __('No Text','event_espresso')),					
+										array('id'=>'inline','text'=> __('Inline Text','event_espresso')),
+										array('id'=>'bubble','text'=> __('In Speech Bubble','event_espresso'))
+									);	
+									echo select_input('espresso_google_annotation', $values, $espresso_google['espresso_google_annotation'], 'id="espresso_google_annotation"');
+									?>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<p>
+						<input type="hidden" name="update_google" value="update" />
+						<input class="button-primary" type="submit" name="Submit" value="<?php _e('Save Google Options', 'event_espresso'); ?>" id="save_google_settings" />
+					</p>
+					</form>
+				</div><!-- / .padding -->
+			</div><!-- / .inside -->
+		</div><!-- / .postbox -->
+	</div><!-- / .metabox-holder -->
+<!--  End Google+1 settings  -->
 
-             </form>
-        
-											 </div><!-- / .padding -->
-										 </div><!-- / .inside -->
-									 </div><!-- / .postbox -->
-								 </div><!-- / .metabox-holder -->        
-    <!-- #### end Facebook settings #### -->
-    
-    <!-- #### Twitter settings #### -->   
-								<div class="metabox-holder">
-									<div class="postbox">
-										<div title="Click to toggle" class="handlediv"><br /></div>
-										<h3 class="hndle">
-												<?php _e('Twitter Settings ', 'event_espresso'); ?>
-										</h3>
-										<div class="inside">
-											<div class="padding">    
-           <p class="section-heading"><?php _e('Configure your Twitter account settings ', 'event_espresso') ?><a class="thickbox"  href="#TB_inline?height=400&amp;width=500&amp;inlineId=twitter_info" target="_blank"><img src="<?php echo EVENT_ESPRESSO_PLUGINFULLURL ?>images/question-frame.png" width="16" height="16" alt="" /></a></p>  
-            
-            <form class="espresso_form" method="post" action="<?php echo $_SERVER['REQUEST_URI']?>">
-              <ul id="event_espresso-twitter">
-
-               <li>
-                 <label for="espresso_twitter_username">
-                  <?php _e('Twitter Username:','event_espresso'); ?>
-                 </label>
-                <input id="espresso_twitter_username" type="text" name="espresso_twitter_username" size="30" maxlength="20" value="<?php echo $espresso_twitter['espresso_twitter_username'];?>" />
-               </li>
-               
-               <li>
-                 <label for="espresso_twitter_text">
-                 <?php _e('Default Twitter Text:','event_espresso'); ?>
-                </label>
-                <input id="espresso_twitter_text" type="text" name="espresso_twitter_text" size="100" maxlength="100" value="<?php echo stripslashes_deep($espresso_twitter['espresso_twitter_text']);?>" />
-               </li>
-
-               <li>
-                <label for="espresso_twitter_count_box">
-                <?php _e('Count Box Position:','event_espresso'); ?>
-                </label>
-                 <?php
-                 $values=array(					
-                 array('id'=>'none','text'=> __('None','event_espresso')),
-                 array('id'=>'horizontal','text'=> __('Horizontal','event_espresso')),
-                 array('id'=>'vertical','text'=> __('Vertical','event_espresso'))
-                 );				
-                 echo select_input('espresso_twitter_count_box', $values, $espresso_twitter['espresso_twitter_count_box'], 'id="espresso_twitter_count_box"');
-                 ?>
-               </li>
-               
-               <li>
-                <label for="espresso_twitter_lang">
-                <?php _e('The language for the Tweet Button:','event_espresso'); ?>
-                </label>
-                <?php
-                $values=array(					
-                array('id'=>'en','text'=> __('English','event_espresso')),
-                array('id'=>'da','text'=> __('Danish','event_espresso')),
-                array('id'=>'dl','text'=> __('Dutch','event_espresso')),
-                array('id'=>'fr','text'=> __('French','event_espresso')),
-                array('id'=>'de','text'=> __('German','event_espresso')),
-                array('id'=>'es','text'=> __('Spanish','event_espresso'))
-                );				
-                echo select_input('espresso_twitter_lang', $values, $espresso_twitter['espresso_twitter_lang'], 'id="espresso_twitter_lang"');
-                ?>
-               </li>
-
-               <li> 
-                <input type="hidden" name="update_twitter" value="update" />
-                <p>
-                 <input class="button-primary" type="submit" name="Submit" value="<?php _e('Save Twitter Options', 'event_espresso'); ?>" id="save_twitter_settings" />
-                </p>
-               </li>
-
-              </ul>
-
-            </form>
-											</div><!-- / .padding -->
-										</div><!-- / .inside -->
-									</div><!-- / .postbox -->
-								</div><!-- / .metabox-holder -->    
-    <!-- #### end twitter settings #### -->
-
-    <!-- #### Google+1 settings #### -->   
-								<div class="metabox-holder">
-									<div class="postbox">
-										<div title="Click to toggle" class="handlediv"><br /></div>
-										<h3 class="hndle">
-												<?php _e('Google+1  Settings ', 'event_espresso'); ?>
-										</h3>
-										<div class="inside">
-											<div class="padding">
-											 <form class="espresso_form" method="post" action="<?php echo $_SERVER['REQUEST_URI']?>">
-												
-             <ul id="event_espresso-google">
-
-              <li>
-               <label for="espresso_google_button_size">
-                <?php _e('Google Button size:','event_espresso'); ?>
-               </label>
-               <?php
-               $values=array(
-               array('id'=>'small','text'=> __('Small (15px)','event_espresso')),					
-               array('id'=>'medium','text'=> __('Medium (20px)','event_espresso')),
-               array('id'=>'standard','text'=> __('Standard (24px)','event_espresso')),
-															array('id'=>'tall','text'=> __('Tall (60px)','event_espresso'))
-               );				
-               echo select_input('espresso_google_button_size', $values, $espresso_google['espresso_google_button_size'], 'id="espresso_google_button_size"');
-               ?>
-              </li>
-
-              <li>
-               <label for="espresso_google_annotation">
-                <?php _e('Google text display:','event_espresso'); ?>
-               </label>
-               <?php
-               $values=array(
-               array('id'=>'none','text'=> __('No Text','event_espresso')),					
-               array('id'=>'inline','text'=> __('Inline Text','event_espresso')),
-               array('id'=>'bubble','text'=> __('In Speech Bubble','event_espresso'))
-               );	
-               echo select_input('espresso_google_annotation', $values, $espresso_google['espresso_google_annotation'], 'id="espresso_google_annotation"');
-               ?>
-              </li>
-																												
-              <li> 
-                <input type="hidden" name="update_google" value="update" />
-                <p>
-                 <input class="button-primary" type="submit" name="Submit" value="<?php _e('Save Google Options', 'event_espresso'); ?>" id="save_google_settings" />
-                </p>
-              </li>
-																																								
-												 </ul>
-												</form>
-											</div><!-- / .padding -->
-										</div><!-- / .inside -->
-									</div><!-- / .postbox -->
-								</div><!-- / .metabox-holder -->
-					<!-- #### End Google+1 settings #### -->
-					
-    <!-- #### Google+1 settings #### -->   
-								<div class="metabox-holder">
-									<div class="postbox">
-										<div title="Click to toggle" class="handlediv"><br /></div>
-										<h3 class="hndle">
-												<?php _e('Stumbleupon  Settings ', 'event_espresso'); ?>
-										</h3>
-										<div class="inside">
-											<div class="padding">
-											 <form class="espresso_form" method="post" action="<?php echo $_SERVER['REQUEST_URI']?>">
-												
-             <ul id="event_espresso-stumbleupon">
-
-              <li>
-               <label for="espresso_stumbleupon_button_style">
-                <?php _e('Stumbleupon button styles:','event_espresso'); ?>
-               </label>
-               <?php
-               $values=array(
-               array('id'=>'1','text'=> __('Small (square text box)','event_espresso')),					
-               array('id'=>'2','text'=> __('Small (round text box)','event_espresso')),
-               array('id'=>'3','text'=> __('Small (plain text)','event_espresso')),
-															array('id'=>'5','text'=> __('Large (square text box)','event_espresso')),
-															array('id'=>'4','text'=> __('Small (no text)','event_espresso')),
-															array('id'=>'6','text'=> __('Large (no text)','event_espresso'))
-               );				
-               echo select_input('espresso_stumbleupon_button_style', $values, $espresso_stumbleupon['espresso_stumbleupon_button_style'], 'id="espresso_stumbleupon_button_style"');
-               ?>
-              </li>
-																												
-              <li> 
-                <input type="hidden" name="update_stumbleupon" value="update" />
-                <p>
-                 <input class="button-primary" type="submit" name="Submit" value="<?php _e('Save Stumbleupon Options', 'event_espresso'); ?>" id="save_google_settings" />
-                </p>
-              </li>
-																																								
-												 </ul>
-												</form>
-											</div><!-- / .padding -->
-										</div><!-- / .inside -->
-									</div><!-- / .postbox -->
-								</div><!-- / .metabox-holder -->
-					<!-- #### End stumbleupon settings #### -->					
-																			    
+<!--  Stumbleupon settings  -->
+	<div class="metabox-holder">
+		<div class="postbox">
+		<div title="Click to toggle" class="handlediv"><br /></div>
+			<h3 class="hndle">
+				<?php _e('Stumbleupon  Settings ', 'event_espresso'); ?>
+			</h3>
+			<div class="inside">
+				<div class="padding">
+					<form class="espresso_form" method="post" action="<?php echo $_SERVER['REQUEST_URI']?>">
+					<table id="event_espresso-facebook" class="form-table">
+						<tbody>
+							<tr>
+							<th>
+								<label for="espresso_stumbleupon_button_style">
+									<?php _e('Stumbleupon button styles:','event_espresso'); ?>
+								</label>
+							</th>
+							<td>
+							<?php
+							$values=array(
+								array('id'=>'1','text'=> __('Small (square text box)','event_espresso')),					
+								array('id'=>'2','text'=> __('Small (round text box)','event_espresso')),
+								array('id'=>'3','text'=> __('Small (plain text)','event_espresso')),
+								array('id'=>'5','text'=> __('Large (square text box)','event_espresso')),
+								array('id'=>'4','text'=> __('Small (no text)','event_espresso')),
+								array('id'=>'6','text'=> __('Large (no text)','event_espresso'))
+							);				
+							echo select_input('espresso_stumbleupon_button_style', $values, $espresso_stumbleupon['espresso_stumbleupon_button_style'], 'id="espresso_stumbleupon_button_style"');
+							?>
+							</td>
+						</tr>
+					</tbody>
+				</table> 
+				<p>
+					<input type="hidden" name="update_stumbleupon" value="update" />
+					<input class="button-primary" type="submit" name="Submit" value="<?php _e('Save Stumbleupon Options', 'event_espresso'); ?>" id="save_google_settings" />
+				</p>
+				</form>
+			</div><!-- / .padding -->
+		</div><!-- / .inside -->
+	</div><!-- / .postbox -->
+</div><!-- / .metabox-holder -->
+<!--  End stumbleupon settings  -->
 	<?php  include_once('social-media_help.php'); ?>
-     </div><!-- / .meta-box-sortables -->
-    </div><!-- / #post-body-content -->
-			</div><!-- / #post-body -->
-		</div><!-- / #poststuff -->
-	</div><!-- / #wrap -->
+
+			</div><!-- / .meta-box-sortables -->
+		</div><!-- / #post-body-content -->
+	</div><!-- / #post-body -->
+	</div><!-- / #poststuff -->
+</div><!-- / #wrap -->
 	<script type="text/javascript" charset="utf-8">
 		//<![CDATA[
 		jQuery(document).ready(function() {
@@ -479,7 +504,7 @@ function espresso_social_config_mnu()	{
 ************************/
 if (!function_exists('espresso_facebook_button')) {
 	function espresso_facebook_button ($event_id){
-		//OVerride this function using the Custom Files Addon (http://eventespresso.com/download/add-ons/custom-files-addon/)
+		//Override this function using the Custom Files Addon (http://eventespresso.com/download/add-ons/custom-files-addon/)
 		global $org_options, $espresso_facebook;
 		
 		//Build the URl to the page
