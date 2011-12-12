@@ -619,4 +619,35 @@ if (!function_exists('espresso_stumbleupon_button')) {
 		
 		return $button;
 	}
-}		
+}
+
+//Social media buttons
+if (!function_exists('espresso_show_social_media')) {
+
+	function espresso_show_social_media($event_id, $type = 'twitter') {
+		switch ($type) {
+			case 'twitter':
+				if (function_exists('espresso_twitter_button')) {
+					return espresso_twitter_button($event_id);
+				}
+				break;
+			case 'facebook':
+				if (function_exists('espresso_facebook_button')) {
+					return espresso_facebook_button($event_id);
+				}
+				break;
+			case 'google':
+				if (function_exists('espresso_google_button')) {
+					return espresso_google_button($event_id);
+				}
+			case 'stumbleupon':
+				if (function_exists('espresso_stumbleupon_button')) {
+					return espresso_stumbleupon_button($event_id);
+				}
+			default:
+				break;
+		}
+	}
+
+}
+	
