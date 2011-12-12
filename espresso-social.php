@@ -548,7 +548,7 @@ if (!function_exists('espresso_twitter_button')) {
 // lang - The language for the Tweet Button. Set it to the two letter ISO-639-1 language code (http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Default is English (en)
 
 //For more information, check out http://dev.twitter.com/pages/tweet_button_faq
-if (!function_exists('espresso_twitter_button_shortcode')) { 
+/*if (!function_exists('espresso_twitter_button_shortcode')) { 
 	//Override this function using the Custom Files Addon (http://eventespresso.com/download/add-ons/custom-files-addon/)
 	function espresso_twitter_button_shortcode ($atts){
 		//global $wpdb, $org_options;
@@ -573,7 +573,7 @@ if (!function_exists('espresso_twitter_button_shortcode')) {
 	}
 }
 add_shortcode('ESPRESSO_TWITTER', 'espresso_twitter_button_shortcode');
-
+*/
 /******************
 * Google+1 button *
 *******************/
@@ -622,9 +622,9 @@ if (!function_exists('espresso_stumbleupon_button')) {
 }
 
 //Social media buttons
-if (!function_exists('espresso_show_social_media')) {
+if (!function_exists('espresso_social_media_buttons')) {
 
-	function espresso_show_social_media($event_id, $type = 'twitter') {
+	function espresso_social_media_buttons($event_id, $type = '') {
 		switch ($type) {
 			case 'twitter':
 				if (function_exists('espresso_twitter_button')) {
@@ -640,14 +640,27 @@ if (!function_exists('espresso_show_social_media')) {
 				if (function_exists('espresso_google_button')) {
 					return espresso_google_button($event_id);
 				}
+				break;
 			case 'stumbleupon':
 				if (function_exists('espresso_stumbleupon_button')) {
 					return espresso_stumbleupon_button($event_id);
 				}
+				break;
 			default:
 				break;
 		}
 	}
 
 }
-	
+
+function espresso_social_display_buttons ($event_id){
+	//echo $event_id;
+	echo '<div class="ee-social-media-buttons">';
+	if( espresso_social_media_buttons($event_id, 'twitter')) { echo  '<span class="twitter-button">'.espresso_social_media_buttons($event_id, 'twitter').'</span>'; }
+	if( espresso_social_media_buttons($event_id, 'facebook')) { echo '<span class="facebook-button">'.espresso_social_media_buttons($event_id, 'facebook').'</span>'; }
+	if( espresso_social_media_buttons($event_id, 'stumbleupon')) { echo '<span class="stumbleupon-button">'.espresso_social_media_buttons($event_id, 'stumbleupon').'</span>'; }
+	if( espresso_social_media_buttons($event_id, 'google')) { echo '<span class="google-button">'.espresso_social_media_buttons($event_id, 'google').'</span>'; }
+	echo '</div>';
+	return;
+}
+add_action( 'espresso_social_display_buttons', 'espresso_social_display_buttons', 10, 1 );
