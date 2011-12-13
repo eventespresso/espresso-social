@@ -659,7 +659,7 @@ function espresso_social_display_buttons ($event_id){
 	if( espresso_social_media_buttons($event_id, 'twitter')) { echo  '<span class="twitter-button">'.espresso_social_media_buttons($event_id, 'twitter').'</span>'; }
 	if( espresso_social_media_buttons($event_id, 'facebook')) { echo '<span class="facebook-button">'.espresso_social_media_buttons($event_id, 'facebook').'</span>'; }
 	if( espresso_social_media_buttons($event_id, 'stumbleupon')) { echo '<span class="stumbleupon-button">'.espresso_social_media_buttons($event_id, 'stumbleupon').'</span>'; }
-	if( espresso_social_media_buttons($event_id, 'google')) { echo '<span class="google-button">'.espresso_social_media_buttons($event_id, 'google').'</span>'; }
+	if( espresso_social_media_buttons($event_id, 'google')) { echo '<div class="google-button">'.espresso_social_media_buttons($event_id, 'google').'</div>'; }
 	echo '</div>';
 	return;
 }
