@@ -302,7 +302,7 @@ function espresso_social_config_mnu()	{
 		</h3>
 		<div class="inside">
 			<div class="padding">
-				<p class="section-heading"><?php _e('Configure your Twitter account settings ', 'event_espresso') ?><?php apply_filters('espresso_help', 'twitter_info') ?></p>
+				<p class="section-heading"><?php _e('Configure your Twitter account settings ', 'event_espresso') ?><?php apply_filters( 'filter_hook_espresso_help', 'twitter_info') ?></p>
 				<form class="espresso_form" method="post" action="<?php echo $_SERVER['REQUEST_URI']?>">
 					<table id="event_espresso-facebook" class="form-table">
 						<tbody>
@@ -656,11 +656,11 @@ if (!function_exists('espresso_social_media_buttons')) {
 function espresso_social_display_buttons ($event_id){
 	//echo $event_id;
 	echo '<div class="ee-social-media-buttons">';
-	if( espresso_social_media_buttons($event_id, 'twitter')) { echo  '<span class="twitter-button">'.espresso_social_media_buttons($event_id, 'twitter').'</span>'; }
-	if( espresso_social_media_buttons($event_id, 'facebook')) { echo '<span class="facebook-button">'.espresso_social_media_buttons($event_id, 'facebook').'</span>'; }
-	if( espresso_social_media_buttons($event_id, 'stumbleupon')) { echo '<span class="stumbleupon-button">'.espresso_social_media_buttons($event_id, 'stumbleupon').'</span>'; }
-	if( espresso_social_media_buttons($event_id, 'google')) { echo '<div class="google-button">'.espresso_social_media_buttons($event_id, 'google').'</div>'; }
+	if( espresso_social_media_buttons($event_id, 'twitter')) { echo  '<span class="twitter-button ee-social-media-button">'.espresso_social_media_buttons($event_id, 'twitter').'</span>'; }
+	if( espresso_social_media_buttons($event_id, 'facebook')) { echo '<span class="facebook-button ee-social-media-button" style="position:relative; top:1px;">'.espresso_social_media_buttons($event_id, 'facebook').'</span>'; }
+	if( espresso_social_media_buttons($event_id, 'stumbleupon')) { echo '<span class="stumbleupon-button ee-social-media-button">'.espresso_social_media_buttons($event_id, 'stumbleupon').'</span>'; }
+	if( espresso_social_media_buttons($event_id, 'google')) { echo '<div class="google-button ee-social-media-button">'.espresso_social_media_buttons($event_id, 'google').'</div>'; }
 	echo '</div>';
 	return;
 }
-add_action( 'espresso_social_display_buttons', 'espresso_social_display_buttons', 10, 1 );
+add_action( 'action_hook_espresso_social_display_buttons', 'espresso_social_display_buttons', 10, 1 );
