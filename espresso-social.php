@@ -45,8 +45,10 @@ $espresso_twitter = get_option('espresso_twitter_settings');
 global $espresso_google;
 $espresso_google = get_option('espresso_google_settings');
 
+/* just say no to stumbleupon - cb #626
 global $espresso_stumbleupon;
 $espresso_stumbleupon = get_option('espresso_stumbleupon_settings');
+*/
 
 //Install the plugin
 function espresso_social_install(){
@@ -80,12 +82,14 @@ function espresso_social_install(){
 	update_option( 'espresso_google_settings', $espresso_google);
 	
  // Install  stumbleupon options
+ /* just say no to stumbleupon - cb #626
 	$espresso_stumbleupon = array(
 				'espresso_stumbleupon_button_style' => '2',
 				'espresso_stumbleupon_button_url' => ''
 				);	
-	update_option('espresso_stumbleupon_settings', $espresso_stumbleupon);
+	update_option('espresso_stumbleupon_settings', $espresso_stumbleupon); */
 }	
+
 register_activation_hook(__FILE__, 'espresso_social_install');
 
 function espresso_social_config_mnu()	{
@@ -144,6 +148,7 @@ function espresso_social_config_mnu()	{
 	$espresso_google = get_option('espresso_google_settings');
 	
 	/*Stumbleupon*/
+	/* just say no to stumbleupon - cb #626
 	function espresso_stumbleupon_updated(){
 	echo '<div class="updated fade"><p>'. __('Stumbleupon details saved.','event_espresso') . '</p></div>';
 	}
@@ -157,7 +162,7 @@ function espresso_social_config_mnu()	{
 	}
 		
 	$espresso_stumbleupon = get_option('espresso_stumbleupon_settings');	
-
+*/
 ?>
 
 <div id="configure_organization_form" class="wrap meta-box-sortables ui-sortable clearfix">
@@ -186,7 +191,7 @@ function espresso_social_config_mnu()	{
 						</h3>
 						<div class="inside">
 							<div class="padding">  
-							<p class="section-heading"><?php _e('Configure your Facebook account settings ', 'event_espresso') ?><a class="thickbox"  href="#TB_inline?height=400&amp;width=500&amp;inlineId=facebook_info" target="_blank"><img src="<?php echo EVENT_ESPRESSO_PLUGINFULLURL ?>images/question-frame.png" width="16" height="16" alt="" /></a></p>
+							<p class="section-heading"><?php _e('Configure your Facebook account settings ', 'event_espresso') ?><a class="thickbox"  href="#TB_inline?height=400&amp;width=500&amp;inlineId=facebook_info" <?php /* wtf?? target="_blank" */ ?>><img src="<?php echo EVENT_ESPRESSO_PLUGINFULLURL ?>images/question-frame.png" width="16" height="16" alt="" /></a></p>
 							<form class="espresso_form" method="post" action="<?php echo $_SERVER['REQUEST_URI']?>">
 								<table id="event_espresso-facebook" class="form-table">
 								<tbody>
@@ -438,6 +443,7 @@ function espresso_social_config_mnu()	{
 <!--  End Google+1 settings  -->
 
 <!--  Stumbleupon settings  -->
+<?php /* just say no to stumbleupon - cb #626
 	<div class="metabox-holder">
 		<div class="postbox">
 		<div title="Click to toggle" class="handlediv"><br /></div>
@@ -481,6 +487,7 @@ function espresso_social_config_mnu()	{
 	</div><!-- / .postbox -->
 </div><!-- / .metabox-holder -->
 <!--  End stumbleupon settings  -->
+*/ ?>
 	<?php  include_once('social-media_help.php'); ?>
 
 			</div><!-- / .meta-box-sortables -->
@@ -607,6 +614,7 @@ if (!function_exists('espresso_google_button')) {
 /****************
 * Stumbleupon *
 *****************/	
+/* just say no to stumbleupon - cb #626
 if (!function_exists('espresso_stumbleupon_button')) {
 	// Override this function using the Custom Files Addon (http://eventespresso.com/download/add-ons/custom-files-addon/)
 	function espresso_stumbleupon_button ($event_id){
@@ -620,7 +628,7 @@ if (!function_exists('espresso_stumbleupon_button')) {
 		return $button;
 	}
 }
-
+*/
 //Social media buttons
 if (!function_exists('espresso_social_media_buttons')) {
 
@@ -641,11 +649,13 @@ if (!function_exists('espresso_social_media_buttons')) {
 					return espresso_google_button($event_id);
 				}
 				break;
+			/* just say no to stumbleupon - cb #626
 			case 'stumbleupon':
 				if (function_exists('espresso_stumbleupon_button')) {
 					return espresso_stumbleupon_button($event_id);
 				}
 				break;
+			*/
 			default:
 				break;
 		}
@@ -657,9 +667,11 @@ function espresso_social_display_buttons ($event_id){
 	//echo $event_id;
 	echo '<div class="ee-social-media-buttons">';
 	if( espresso_social_media_buttons($event_id, 'twitter')) { echo  '<span class="twitter-button ee-social-media-button">'.espresso_social_media_buttons($event_id, 'twitter').'</span>'; }
-	if( espresso_social_media_buttons($event_id, 'facebook')) { echo '<span class="facebook-button ee-social-media-button" style="position:relative; top:1px;">'.espresso_social_media_buttons($event_id, 'facebook').'</span>'; }
+	/* just say no to stumbleupon - cb #626
 	if( espresso_social_media_buttons($event_id, 'stumbleupon')) { echo '<span class="stumbleupon-button ee-social-media-button">'.espresso_social_media_buttons($event_id, 'stumbleupon').'</span>'; }
+	*/
 	if( espresso_social_media_buttons($event_id, 'google')) { echo '<div class="google-button ee-social-media-button">'.espresso_social_media_buttons($event_id, 'google').'</div>'; }
+	if( espresso_social_media_buttons($event_id, 'facebook')) { echo '<span class="facebook-button ee-social-media-button" style="position:relative; top:1px;">'.espresso_social_media_buttons($event_id, 'facebook').'</span>'; } // moving facebook to the last position to, hopefully, fix cb #587
 	echo '</div>';
 	return;
 }
