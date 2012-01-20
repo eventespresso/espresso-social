@@ -191,7 +191,7 @@ function espresso_social_config_mnu()	{
 						</h3>
 						<div class="inside">
 							<div class="padding">  
-							<p class="section-heading"><?php _e('Configure your Facebook account settings ', 'event_espresso') ?><a class="thickbox"  href="#TB_inline?height=400&amp;width=500&amp;inlineId=facebook_info" <?php /* wtf?? target="_blank" */ ?>><img src="<?php echo EVENT_ESPRESSO_PLUGINFULLURL ?>images/question-frame.png" width="16" height="16" alt="" /></a></p>
+							<p class="section-heading"><?php _e('Configure your Facebook account settings ', 'event_espresso') ?></p>
 							<form class="espresso_form" method="post" action="<?php echo $_SERVER['REQUEST_URI']?>">
 								<table id="event_espresso-facebook" class="form-table">
 								<tbody>
