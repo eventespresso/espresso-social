@@ -488,7 +488,8 @@ function espresso_social_config_mnu()	{
 </div><!-- / .metabox-holder -->
 <!--  End stumbleupon settings  -->
 */ ?>
-	<?php  include_once('social-media_help.php'); ?>
+	<?php  // yeah, no.
+	/* include_once('social-media_help.php'); */ ?>
 
 			</div><!-- / .meta-box-sortables -->
 		</div><!-- / #post-body-content -->
@@ -515,10 +516,34 @@ if (!function_exists('espresso_facebook_button')) {
 		global $org_options, $espresso_facebook;
 		
 		//Build the URl to the page
-		$registration_url = espresso_reg_url($event_id); //get_option('siteurl') . '/?ee='. $event_id;
-	
+		// this is broken in facebook, so let's create the url a different way
+		//$registration_url = espresso_reg_url($event_id); //get_option('siteurl') . '/?ee='. $event_id;
+		$slug = basename(get_permalink());
+		$registration_url = get_option('siteurl') . '/' . $slug . '/?ee=' . $event_id; // this breaks if they aren't using pretty permalinks
+	// wow, this is a pile of poo.  let's fix it.
+	/* old button
 		$button = '<iframe src="http://www.facebook.com/plugins/like.php?href='.$registration_url.'&amp;layout=' . $espresso_facebook['espresso_facebook_layout'] . '&amp;show_faces=' . $espresso_facebook['espresso_facebook_faces'] . '&amp;width=' . $espresso_facebook['espresso_facebook_width'] . '&amp;action=' . $espresso_facebook['espresso_facebook_action'] . '&amp;font=' . $espresso_facebook['espresso_facebook_font'] . '&amp;colorscheme=' . $espresso_facebook['espresso_facebook_colorscheme'] . '&amp;height=' . $espresso_facebook['espresso_facebook_height'] . '" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:' . $espresso_facebook['espresso_facebook_width'] . 'px; height:' . $espresso_facebook['espresso_facebook_height'] . 'px;" allowTransparency="true"></iframe>';
-		
+	*/
+	//n new button
+	if (is_ssl()) {
+		$button = '<iframe src="https://www.facebook.com/plugins/like.php?href=';
+	}
+	else {
+		$button = '<iframe src="http://www.facebook.com/plugins/like.php?href=';
+	}
+		$button .= $registration_url;
+		$button .= '&amp;layout=' . $espresso_facebook['espresso_facebook_layout'];
+		$button .= '&amp;show_faces=' . $espresso_facebook['espresso_facebook_faces'];
+		$button .= '&amp;width=' . $espresso_facebook['espresso_facebook_width'];
+		$button .= '&amp;action=' . $espresso_facebook['espresso_facebook_action'];
+		$button .= '&amp;font=' . $espresso_facebook['espresso_facebook_font'];
+		$button .= '&amp;colorscheme=' . $espresso_facebook['espresso_facebook_colorscheme'];
+		$button .= '&amp;height=' . $espresso_facebook['espresso_facebook_height'];
+		$button .= '" scrolling="no" frameborder="0" ';
+		$button .= 'style="border:none; overflow:hidden; width:' . $espresso_facebook['espresso_facebook_width'] . 'px;';
+		$button .= 'height:' . $espresso_facebook['espresso_facebook_height'] . 'px;"';
+		$button .= 'allowTransparency="true"></iframe>';
+		// that wasn't so hard, was it?
 		return $button;
 	
 	}
