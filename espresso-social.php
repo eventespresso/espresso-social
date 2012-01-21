@@ -524,7 +524,7 @@ if (!function_exists('espresso_facebook_button')) {
 	/* old button
 		$button = '<iframe src="http://www.facebook.com/plugins/like.php?href='.$registration_url.'&amp;layout=' . $espresso_facebook['espresso_facebook_layout'] . '&amp;show_faces=' . $espresso_facebook['espresso_facebook_faces'] . '&amp;width=' . $espresso_facebook['espresso_facebook_width'] . '&amp;action=' . $espresso_facebook['espresso_facebook_action'] . '&amp;font=' . $espresso_facebook['espresso_facebook_font'] . '&amp;colorscheme=' . $espresso_facebook['espresso_facebook_colorscheme'] . '&amp;height=' . $espresso_facebook['espresso_facebook_height'] . '" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:' . $espresso_facebook['espresso_facebook_width'] . 'px; height:' . $espresso_facebook['espresso_facebook_height'] . 'px;" allowTransparency="true"></iframe>';
 	*/
-	//n new button
+	// new button
 	if (is_ssl()) {
 		$button = '<iframe src="https://www.facebook.com/plugins/like.php?href=';
 	}
@@ -559,8 +559,24 @@ if (!function_exists('espresso_twitter_button')) {
 		
 		//Build the URl to the page
 		$registration_url = espresso_reg_url($event_id); //get_option('siteurl') . '/?ee='. $event_id;
-		
+		// this is also a pile of poo (but not quite so large), so we'll fix this one, too
+		/* old button
 		$button = '<a href="http://twitter.com/share" class="twitter-share-button" data-url="' . $registration_url . '" data-text="' . $espresso_twitter['espresso_twitter_text'] . '" data-count="' . $espresso_twitter['espresso_twitter_count_box'] . '" data-via="' . $espresso_twitter['espresso_twitter_username'] . '" data-lang="' . $espresso_twitter['espresso_twitter_lang'] . '">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>';
+		*/
+		// new button
+		if (is_ssl()) {
+			$button = '<a href="https://twitter.com/share"';
+		}
+		else {
+			$button = '<a href="http://twitter.com/share"';
+		}
+		$button .= 'class="twitter-share-button" data-url="' . $registration_url;
+		$button .= '" data-text="' . $espresso_twitter['espresso_twitter_text'];
+		$button .= '" data-count="' . $espresso_twitter['espresso_twitter_count_box'];
+		$button .= '" data-via="' . $espresso_twitter['espresso_twitter_username'];
+		$button .= '" data-lang="' . $espresso_twitter['espresso_twitter_lang'];
+		$button .= '">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>';
+		// all done!
 		return $button;
 	
 	}
