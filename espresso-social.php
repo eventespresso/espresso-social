@@ -204,9 +204,9 @@ function espresso_social_config_mnu()	{
 										<td>
 										<?php
 										$values=array(
-											array('id'=>'button_count','text'=> __('Button Count','event_espresso')),					
-											array('id'=>'standard','text'=> __('Standard','event_espresso')),
-											array('id'=>'box_count','text'=> __('Box Count','event_espresso'))
+											array('id'=>'button_count','text'=> __('Horizontal Button Count','event_espresso')),
+											array('id'=>'standard','text'=> __('Horizontal Standard','event_espresso')),
+											array('id'=>'box_count','text'=> __('Vertical','event_espresso'))
 											);				
 											echo select_input('espresso_facebook_layout', $values, $espresso_facebook['espresso_facebook_layout'], 'id="espresso_facebook_layout"');
 											?>
@@ -383,10 +383,8 @@ function espresso_social_config_mnu()	{
 								<td>
 								<?php
 								$values=array(
-									array('id'=>'small','text'=> __('Small (15px)','event_espresso')),					
-									array('id'=>'medium','text'=> __('Medium (20px)','event_espresso')),
-									array('id'=>'standard','text'=> __('Standard (24px)','event_espresso')),
-									array('id'=>'tall','text'=> __('Tall (60px)','event_espresso'))
+									array('id'=>'medium','text'=> __('Horizontal','event_espresso')),
+									array('id'=>'tall','text'=> __('Vertical','event_espresso'))
 								);
 								echo select_input('espresso_google_button_size', $values, $espresso_google['espresso_google_button_size'], 'id="espresso_google_button_size"');
 								?>
@@ -713,6 +711,7 @@ function espresso_social_display_buttons ($event_id){
 	if( espresso_social_media_buttons($event_id, 'google')) { echo '<div class="google-button ee-social-media-button ' . $espresso_social_google['espresso_google_button_size'] . '">'.espresso_social_media_buttons($event_id, 'google').'</div>'; }
 	if( espresso_social_media_buttons($event_id, 'facebook')) { echo '<span class="facebook-button ee-social-media-button ' . $espresso_social_facebook['espresso_facebook_layout'] . '">'.espresso_social_media_buttons($event_id, 'facebook').'</span>'; } // moving facebook to the last position to, hopefully, fix cb #587
 	echo '</div>';
+	echo '<div style="clear: both;"></div>';
 	return;
 }
 add_action( 'action_hook_espresso_social_display_buttons', 'espresso_social_display_buttons', 10, 1 );
