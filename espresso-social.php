@@ -540,8 +540,10 @@ if (!function_exists('espresso_facebook_button')) {
 		$button .= '&amp;colorscheme=' . $espresso_facebook['espresso_facebook_colorscheme'];
 		$button .= '&amp;height=' . $espresso_facebook['espresso_facebook_height'];
 		$button .= '" scrolling="no" frameborder="0" ';
-		$button .= 'style="border:none; overflow:hidden; width:' . $espresso_facebook['espresso_facebook_width'] . 'px;';
-		$button .= 'height:' . $espresso_facebook['espresso_facebook_height'] . 'px;"';
+		if ( $espresso_facebook['espresso_facebook_layout'] != 'box_count' ) {
+			$button .= 'style="border:none; overflow:hidden; width:' . $espresso_facebook['espresso_facebook_width'] . 'px;';
+			$button .= 'height:' . $espresso_facebook['espresso_facebook_height'] . 'px;"';
+		}
 		$button .= 'allowTransparency="true"></iframe>';
 		// that wasn't so hard, was it?
 		return $button;
@@ -705,15 +707,20 @@ if (!function_exists('espresso_social_media_buttons')) {
 }
 
 function espresso_social_display_buttons ($event_id){
+	/*
+		fetching the options here so I can output the alignment of each button and apply some conditional styling based on the orientation of the button
+	*/
 	$espresso_social_twitter = get_option('espresso_twitter_settings');
+	$espresso_social_google = get_option('espresso_google_settings');
+	$espresso_social_facebook = get_option('espresso_facebook_settings');
 	//echo $event_id;
-	echo '<div class="ee-social-media-buttons">';		echo $espresso_social_twitter['espresso_twitter_count_box'];
-	if( espresso_social_media_buttons($event_id, 'twitter')) { echo  '<span class="twitter-button ee-social-media-button">'.espresso_social_media_buttons($event_id, 'twitter').'</span>'; }
+	echo '<div class="ee-social-media-buttons">';
+	if( espresso_social_media_buttons($event_id, 'twitter')) { echo  '<span class="twitter-button ee-social-media-button ' . $espresso_social_twitter['espresso_twitter_count_box'] . '">'.espresso_social_media_buttons($event_id, 'twitter').'</span>'; }
 	/* just say no to stumbleupon - cb #626
 	if( espresso_social_media_buttons($event_id, 'stumbleupon')) { echo '<span class="stumbleupon-button ee-social-media-button">'.espresso_social_media_buttons($event_id, 'stumbleupon').'</span>'; }
 	*/
-	if( espresso_social_media_buttons($event_id, 'google')) { echo '<div class="google-button ee-social-media-button ' . get_option(espresso_google_settings['espresso_google_button_size']) . '">'.espresso_social_media_buttons($event_id, 'google').'</div>'; }
-	if( espresso_social_media_buttons($event_id, 'facebook')) { echo '<span class="facebook-button ee-social-media-button">'.espresso_social_media_buttons($event_id, 'facebook').'</span>'; } // moving facebook to the last position to, hopefully, fix cb #587
+	if( espresso_social_media_buttons($event_id, 'google')) { echo '<div class="google-button ee-social-media-button ' . $espresso_social_google['espresso_google_button_size'] . '">'.espresso_social_media_buttons($event_id, 'google').'</div>'; }
+	if( espresso_social_media_buttons($event_id, 'facebook')) { echo '<span class="facebook-button ee-social-media-button ' . $espresso_social_facebook['espresso_facebook_layout'] . '">'.espresso_social_media_buttons($event_id, 'facebook').'</span>'; } // moving facebook to the last position to, hopefully, fix cb #587
 	echo '</div>';
 	return;
 }
