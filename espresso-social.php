@@ -638,7 +638,7 @@ if (!function_exists('espresso_google_button')) {
     	else {
     		$g_button .= 'po.src = \'http://apis.google.com/js/plusone.js\';';
     	}
-    		var s = document.getElementsByTagName(\'script\')[0]; s.parentNode.insertBefore(po, s);
+    	$g_button .= 'var s = document.getElementsByTagName(\'script\')[0]; s.parentNode.insertBefore(po, s);
   		})();
 			</script>';
 		
