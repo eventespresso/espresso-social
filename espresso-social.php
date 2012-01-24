@@ -264,26 +264,6 @@ function espresso_social_config_mnu()	{
 											?>
 										</td>
 									</tr>
-									<tr>
-										<th>
-											<label for="espresso_facebook_height">
-												<?php _e('Height:','event_espresso'); ?>
-											</label>
-										</th>
-										<td>
-											<input id="espresso_facebook_height" type="text" name="espresso_facebook_height" size="100" maxlength="100" value="<?php echo $espresso_facebook['espresso_facebook_height'];?>" />
-										</td>
-									</tr>
-									<tr>
-										<th>
-											<label for="espresso_facebook_width">
-												<?php _e('Width:','event_espresso'); ?>
-											</label>
-										</th>
-										<td>
-											<input id="espresso_facebook_width" type="text" name="espresso_facebook_width" size="100" maxlength="100" value="<?php echo $espresso_facebook['espresso_facebook_width'];?>" />
-										</td>
-									</tr>
 								</tbody>
 							</table>
 							<p>
