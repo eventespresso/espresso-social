@@ -303,16 +303,6 @@ function espresso_social_config_mnu()	{
 							</tr>
 							<tr>
 								<th>
-									<label for="espresso_twitter_text">
-										<?php _e('Default Twitter Text:','event_espresso'); ?>
-									</label>
-								</th>
-								<td>
-									<input id="espresso_twitter_text" type="text" name="espresso_twitter_text" size="100" maxlength="100" value="<?php echo stripslashes_deep($espresso_twitter['espresso_twitter_text']);?>" />
-								</td>
-							</tr>
-							<tr>
-								<th>
 									<label for="espresso_twitter_count_box">
 										<?php _e('Count Box Position:','event_espresso'); ?>
 									</label>
