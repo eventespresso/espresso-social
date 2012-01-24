@@ -540,9 +540,13 @@ if (!function_exists('espresso_facebook_button')) {
 		$button .= '&amp;colorscheme=' . $espresso_facebook['espresso_facebook_colorscheme'];
 		$button .= '&amp;height=' . $espresso_facebook['espresso_facebook_height'];
 		$button .= '" scrolling="no" frameborder="0" ';
-		if ( $espresso_facebook['espresso_facebook_layout'] != 'box_count' ) {
-			$button .= 'style="border:none; overflow:hidden; width:' . $espresso_facebook['espresso_facebook_width'] . 'px;';
-			$button .= 'height:' . $espresso_facebook['espresso_facebook_height'] . 'px;"';
+		if ( $espresso_facebook['espresso_facebook_layout'] == 'button_count' ) {
+			$button .= 'style="border:none; overflow:hidden; width: 100px;'; // setting the width to 100px to give it some room for lots and lots of likes
+			$button .= 'height: 20px;"'; // setting the height to 20px because that's what it actually is
+		}
+		if ( $espresso_facebook['espresso_facebook_layout'] == 'standard') {
+			$button .= 'style="border:none; overflow:hidden; width: 300px;'; // setting the width to 300px. this is the default if you leave this blank which is at least better than the 450px we were giving it before
+			$button .= 'height: 59px;"'; // setting the height to 59px which is high enough for a single row of faces
 		}
 		$button .= 'allowTransparency="true"></iframe>';
 		// that wasn't so hard, was it?
