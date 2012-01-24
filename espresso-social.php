@@ -631,8 +631,13 @@ if (!function_exists('espresso_google_button')) {
 		$g_button = '<div class="g-plusone" href="' . $registration_url . '" data-href="' . $registration_url . '" data-size="' . $espresso_google['espresso_google_button_size'] . '"' . $annotation . '></div>';	
 		$g_button .= '<script type="text/javascript">
   		(function() {
-    		var po = document.createElement(\'script\'); po.type = \'text/javascript\'; po.async = true;
-    		po.src = \'https://apis.google.com/js/plusone.js\';
+    		var po = document.createElement(\'script\'); po.type = \'text/javascript\'; po.async = true; ';
+    	if ( is_ssl() ) {
+    		$g_button .= 'po.src = \'https://apis.google.com/js/plusone.js\';'; // only load https address if we're using ssl on the page
+    	}
+    	else {
+    		$g_button .= 'po.src = \'http://apis.google.com/js/plusone.js\';';
+    	}
     		var s = document.getElementsByTagName(\'script\')[0]; s.parentNode.insertBefore(po, s);
   		})();
 			</script>';
