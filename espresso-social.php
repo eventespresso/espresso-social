@@ -565,7 +565,12 @@ if (!function_exists('espresso_twitter_button')) {
 		$button .= '" data-count="' . $espresso_twitter['espresso_twitter_count_box'];
 		$button .= '" data-via="' . $espresso_twitter['espresso_twitter_username'];
 		$button .= '" data-lang="' . $espresso_twitter['espresso_twitter_lang'];
-		$button .= '">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>';
+		if (is_ssl()) {
+			$button .= '">Tweet</a><script type="text/javascript" src="https://platform.twitter.com/widgets.js"></script>';
+		}
+		else {
+			$button .= '">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>';
+		}
 		// all done!
 		return $button;
 	
@@ -619,24 +624,17 @@ if (!function_exists('espresso_google_button')) {
 	// Override this function using the Custom Files Addon (http://eventespresso.com/download/add-ons/custom-files-addon/)
 	function espresso_google_button ($event_id){
 		global $wpdb, $org_options, $espresso_google;
-		
-		if($espresso_google['espresso_google_annotation'] == 'none')
-		 $annotation = 'data-annotation="none"';
-		if($espresso_google['espresso_google_annotation'] == 'inline')
-		 $annotation = 'data-annotation="inline"';
-		if($espresso_google['espresso_google_annotation'] == 'bubble')
-		 $annotation = '';
-		
+
 		$registration_url = espresso_reg_url($event_id); //get_option('siteurl') . '/?ee='. $event_id;
-		$g_button = '<div class="g-plusone" href="' . $registration_url . '" data-href="' . $registration_url . '" data-size="' . $espresso_google['espresso_google_button_size'] . '"' . $annotation . '></div>';	
+		$g_button = '<div class="g-plusone" href="' . $registration_url . '" data-href="' . $registration_url . '" data-size="' . $espresso_google['espresso_google_button_size'] . '"></div>';
 		$g_button .= '<script type="text/javascript">
   		(function() {
     		var po = document.createElement(\'script\'); po.type = \'text/javascript\'; po.async = true; ';
     	if ( is_ssl() ) {
-    		$g_button .= 'po.src = \'https://apis.google.com/js/plusone.js\';'; // only load https address if we're using ssl on the page
+    		$g_button .= 'po.src = \'https://apis.google.com/js/plusone.js\';';
     	}
     	else {
-    		$g_button .= 'po.src = \'http://apis.google.com/js/plusone.js\';';
+    		$g_button .= 'po.src = \'http://apis.google.com/js/plusone.js\';'; // only load https address if we're using ssl on the page
     	}
     	$g_button .= 'var s = document.getElementsByTagName(\'script\')[0]; s.parentNode.insertBefore(po, s);
   		})();
