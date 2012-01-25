@@ -534,7 +534,7 @@ if (!function_exists('espresso_twitter_button')) {
 	//OVerride this function using the Custom Files Addon (http://eventespresso.com/download/add-ons/custom-files-addon/)
 	function espresso_twitter_button ($event_id){
 		global $wpdb, $org_options, $espresso_twitter;
-		
+
 		//Build the URl to the page
 		$registration_url = espresso_reg_url($event_id); //get_option('siteurl') . '/?ee='. $event_id;
 		// this is also a pile of poo (but not quite so large), so we'll fix this one, too
@@ -549,7 +549,6 @@ if (!function_exists('espresso_twitter_button')) {
 			$button = '<a href="http://twitter.com/share"';
 		}
 		$button .= 'class="twitter-share-button" data-url="' . $registration_url;
-		$button .= '" data-text="' . $espresso_twitter['espresso_twitter_text'];
 		$button .= '" data-count="' . $espresso_twitter['espresso_twitter_count_box'];
 		$button .= '" data-via="' . $espresso_twitter['espresso_twitter_username'];
 		$button .= '" data-lang="' . $espresso_twitter['espresso_twitter_lang'];
@@ -693,7 +692,7 @@ function espresso_social_display_buttons ($event_id){
 	$espresso_social_google = get_option('espresso_google_settings');
 	$espresso_social_facebook = get_option('espresso_facebook_settings');
 	//echo $event_id;
-	echo '<div class="ee-social-media-buttons">';
+	echo '<div class="ee-social-media-buttons">';print_r($sql);
 	if( espresso_social_media_buttons($event_id, 'twitter')) { echo  '<span class="twitter-button ee-social-media-button ' . $espresso_social_twitter['espresso_twitter_count_box'] . '">'.espresso_social_media_buttons($event_id, 'twitter').'</span>'; }
 	/* just say no to stumbleupon - cb #626
 	if( espresso_social_media_buttons($event_id, 'stumbleupon')) { echo '<span class="stumbleupon-button ee-social-media-button">'.espresso_social_media_buttons($event_id, 'stumbleupon').'</span>'; }
