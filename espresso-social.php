@@ -690,7 +690,7 @@ function espresso_social_display_buttons ($event_id){
 	$espresso_social_google = get_option('espresso_google_settings');
 	$espresso_social_facebook = get_option('espresso_facebook_settings');
 	//echo $event_id;
-	echo '<div class="ee-social-media-buttons">';print_r($sql);
+	echo '<div class="ee-social-media-buttons">';
 	if( espresso_social_media_buttons($event_id, 'twitter')) { echo  '<span class="twitter-button ee-social-media-button ' . $espresso_social_twitter['espresso_twitter_count_box'] . '">'.espresso_social_media_buttons($event_id, 'twitter').'</span>'; }
 	/* just say no to stumbleupon - cb #626
 	if( espresso_social_media_buttons($event_id, 'stumbleupon')) { echo '<span class="stumbleupon-button ee-social-media-button">'.espresso_social_media_buttons($event_id, 'stumbleupon').'</span>'; }
