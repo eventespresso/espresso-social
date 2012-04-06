@@ -3,7 +3,7 @@
   Plugin Name: Event Espresso - Social Media
   Plugin URI: http://www.eventespresso.com
   Description: A social media addon for Event Espresso. Includes includes Facebook and Twitter share buttons.
-  Version: 1.1
+  Version: 1.1.1
   Usage: Add <?php echo espresso_show_social_media($event_id, 'twitter');?> and/or <?php echo espresso_show_social_media($event_id, 'facebook');?> to display  Twitter or Facebook buttons in your event templates.
   Example: <p><?php echo espresso_show_social_media($event_id, 'twitter');?> <?php echo espresso_show_social_media($event_id, 'facebook');?></p>
   Author: Seth Shoultes
@@ -26,7 +26,7 @@
 
 //Define the version of the plugin
 function espresso_social_version() {
-	return '1.1';
+	return '1.1.1';
 }
 
 if (is_admin()) {
@@ -495,8 +495,8 @@ if (!function_exists('espresso_facebook_button')) {
 		//Build the URl to the page
 		// this is broken in facebook, so let's create the url a different way
 		//$registration_url = espresso_reg_url($event_id); //get_option('siteurl') . '/?ee='. $event_id;
-		$slug = basename(get_permalink());
-		$registration_url = get_option('siteurl') . '/' . $slug . '/?ee=' . $event_id; // this breaks if they aren't using pretty permalinks
+		$permalink = get_permalink();
+		$registration_url = $permalink . '?ee=' . $event_id; // this breaks if they aren't using pretty permalinks
 		// wow, this is a pile of poo.  let's fix it.
 		/* old button
 		  $button = '<iframe src="http://www.facebook.com/plugins/like.php?href='.$registration_url.'&amp;layout=' . $espresso_facebook['espresso_facebook_layout'] . '&amp;show_faces=' . $espresso_facebook['espresso_facebook_faces'] . '&amp;width=' . $espresso_facebook['espresso_facebook_width'] . '&amp;action=' . $espresso_facebook['espresso_facebook_action'] . '&amp;font=' . $espresso_facebook['espresso_facebook_font'] . '&amp;colorscheme=' . $espresso_facebook['espresso_facebook_colorscheme'] . '&amp;height=' . $espresso_facebook['espresso_facebook_height'] . '" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:' . $espresso_facebook['espresso_facebook_width'] . 'px; height:' . $espresso_facebook['espresso_facebook_height'] . 'px;" allowTransparency="true"></iframe>';
@@ -528,6 +528,7 @@ if (!function_exists('espresso_facebook_button')) {
 		}
 		$button .= 'allowTransparency="true"></iframe>';
 		// that wasn't so hard, was it?
+
 		return $button;
 	}
 
