@@ -507,7 +507,7 @@ if (!function_exists('espresso_facebook_button')) {
 		} else {
 			$button = '<iframe src="http://www.facebook.com/plugins/like.php?href=';
 		}
-		$button .= $registration_url;
+		$button .= urldecode($registration_url);
 		$button .= '&amp;layout=' . $espresso_facebook['espresso_facebook_layout'];
 		$button .= '&amp;show_faces=' . $espresso_facebook['espresso_facebook_faces'];
 		$button .= '&amp;width=' . $espresso_facebook['espresso_facebook_width'];
