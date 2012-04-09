@@ -501,6 +501,7 @@ if (!function_exists('espresso_facebook_button')) {
 		/* old button
 		  $button = '<iframe src="http://www.facebook.com/plugins/like.php?href='.$registration_url.'&amp;layout=' . $espresso_facebook['espresso_facebook_layout'] . '&amp;show_faces=' . $espresso_facebook['espresso_facebook_faces'] . '&amp;width=' . $espresso_facebook['espresso_facebook_width'] . '&amp;action=' . $espresso_facebook['espresso_facebook_action'] . '&amp;font=' . $espresso_facebook['espresso_facebook_font'] . '&amp;colorscheme=' . $espresso_facebook['espresso_facebook_colorscheme'] . '&amp;height=' . $espresso_facebook['espresso_facebook_height'] . '" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:' . $espresso_facebook['espresso_facebook_width'] . 'px; height:' . $espresso_facebook['espresso_facebook_height'] . 'px;" allowTransparency="true"></iframe>';
 		 */
+
 		// new button
 		if (is_ssl()) {
 			$button = '<iframe src="https://www.facebook.com/plugins/like.php?href=';
@@ -686,6 +687,20 @@ if (!function_exists('espresso_social_media_buttons')) {
 	}
 
 }
+
+/**
+ * OpenGraph integration
+ * integrates Facebook OpenGraph API for better handling/sharing of events on Facebook
+ * @author Chris Reynolds
+ * @since 1.1.1
+ * @link https://developers.facebook.com/docs/opengraphprotocol/
+ */
+function espresso_social_facebook_opengraph($event_id) { //i may need to pull in some org options but for now leaving this empty...
+	$fbog = '<meta property="og:title" content="' . $event_name .'"/>';
+
+	return $fbog;
+}
+add_action('wp_head', 'espresso_social_facebook_opengraph');
 
 function espresso_social_display_buttons($event_id) {
 	/*
