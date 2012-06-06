@@ -709,20 +709,6 @@ if (!function_exists('espresso_social_media_buttons')) {
 
 }
 
-/**
- * OpenGraph integration
- * integrates Facebook OpenGraph API for better handling/sharing of events on Facebook
- * @author Chris Reynolds
- * @since 1.1.1
- * @link https://developers.facebook.com/docs/opengraphprotocol/
- */
-function espresso_social_facebook_opengraph($event_id) { //i may need to pull in some org options but for now leaving this empty...
-	$fbog = '<meta property="og:title" content="' . $event_name .'"/>';
-
-	return $fbog;
-}
-add_action('wp_head', 'espresso_social_facebook_opengraph');
-
 function espresso_social_display_buttons($event_id) {
 	/*
 	  fetching the options here so I can output the alignment of each button and apply some conditional styling based on the orientation of the button
