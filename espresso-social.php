@@ -26,7 +26,7 @@
 
 //Define the version of the plugin
 function espresso_social_version() {
-	return '1.1.4';
+	return '1.1.5';
 }
 
 //Update notifications
@@ -35,8 +35,8 @@ function ee_social_load_pue_update() {
 	global $org_options, $espresso_check_for_updates;
 	if ( $espresso_check_for_updates == false )
 		return;
-		
-	if (file_exists(EVENT_ESPRESSO_PLUGINFULLPATH . 'class/pue/pue-client.php')) { //include the file 
+
+	if (file_exists(EVENT_ESPRESSO_PLUGINFULLPATH . 'class/pue/pue-client.php')) { //include the file
 		require(EVENT_ESPRESSO_PLUGINFULLPATH . 'class/pue/pue-client.php' );
 		$api_key = $org_options['site_license_key'];
 		$host_server_url = 'http://eventespresso.com';
@@ -131,54 +131,75 @@ register_activation_hook(__FILE__, 'espresso_social_install');
 /* * **********************
  * 	Facebook Button 	*
  * ********************** */
+/***
+*
+* fixed by Dean Robinson 14/03/2013
+*
+***************/
+
 if (!function_exists('espresso_facebook_button')) {
+
+
+
+function espresso_insert_to_head() {
+ob_start();
+
+// this will add the FB scripts needed and a style for the comment box that pops up.
+?>
+
+	<style>
+	.facebook-button div span iframe {
+	min-width:450px;
+	}
+	</style>
+
+	<div id="fb-root"></div>
+
+	<script>(function(d, s, id) {
+	  var js, fjs = d.getElementsByTagName(s)[0];
+	  if (d.getElementById(id)) return;
+	  js = d.createElement(s); js.id = id;
+	  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=534432793275671_API KEY_d910ff3594b7d8764a70d0fc1110be4f";
+	  fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));</script>
+<?php
+
+$espresso_fb_scripts = ob_get_clean();
+echo $espresso_fb_scripts;
+
+}
+add_action ('wp_head', 'espresso_insert_to_head');
+
 
 	function espresso_facebook_button($event_id) {
 		//Override this function using the Custom Files Addon (http://eventespresso.com/download/add-ons/custom-files-addon/)
 		global $espresso_facebook;
 
-		//Build the URl to the page
-		// this is broken in facebook, so let's create the url a different way
-		//$registration_url = espresso_reg_url($event_id); //get_option('siteurl') . '/?ee='. $event_id;
-		$permalink = get_permalink();
 		$registration_url = $permalink . '?ee=' . $event_id; // this breaks if they aren't using pretty permalinks
-		// wow, this is a pile of poo.  let's fix it.
-		/* old button
-		  $button = '<iframe src="http://www.facebook.com/plugins/like.php?href='.$registration_url.'&amp;layout=' . $espresso_facebook['espresso_facebook_layout'] . '&amp;show_faces=' . $espresso_facebook['espresso_facebook_faces'] . '&amp;width=' . $espresso_facebook['espresso_facebook_width'] . '&amp;action=' . $espresso_facebook['espresso_facebook_action'] . '&amp;font=' . $espresso_facebook['espresso_facebook_font'] . '&amp;colorscheme=' . $espresso_facebook['espresso_facebook_colorscheme'] . '&amp;height=' . $espresso_facebook['espresso_facebook_height'] . '" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:' . $espresso_facebook['espresso_facebook_width'] . 'px; height:' . $espresso_facebook['espresso_facebook_height'] . 'px;" allowTransparency="true"></iframe>';
-		 */
+		//http://kovshenin.com/2012/current-url-in-wordpress/
+		global $wp;
+		$espresso_url = add_query_arg( $wp->query_string, '', home_url( $wp->request ) );
+		$espresso_combined_url = $espresso_url . $registration_url;
 
 		// new button
-		if (is_ssl()) {
-			$button = '<iframe src="https://www.facebook.com/plugins/like.php?href=';
-		} else {
-			$button = '<iframe src="http://www.facebook.com/plugins/like.php?href=';
-		}
-		$button .= urldecode($registration_url);
-		$button .= '&amp;layout=' . $espresso_facebook['espresso_facebook_layout'];
-		$button .= '&amp;show_faces=' . $espresso_facebook['espresso_facebook_faces'];
-		$button .= '&amp;width=' . $espresso_facebook['espresso_facebook_width'];
-		$button .= '&amp;action=' . $espresso_facebook['espresso_facebook_action'];
-		$button .= '&amp;font=' . $espresso_facebook['espresso_facebook_font'];
-		$button .= '&amp;colorscheme=' . $espresso_facebook['espresso_facebook_colorscheme'];
-		$button .= '&amp;height=' . $espresso_facebook['espresso_facebook_height'];
-		$button .= '" scrolling="no" frameborder="0" ';
-		if ($espresso_facebook['espresso_facebook_layout'] == 'button_count') {
-			$button .= 'style="border:none; overflow:hidden; width: 100px;'; // setting the width to 100px to give it some room for lots and lots of likes
-			$button .= 'height: 20px;"'; // setting the height to 20px because that's what it actually is
-		} elseif ($espresso_facebook['espresso_facebook_layout'] == 'standard') {
-			$button .= 'style="border:none; overflow:hidden; width: 300px;'; // setting the width to 300px. this is the default if you leave this blank which is at least better than the 450px we were giving it before
-			$button .= 'height: 59px;"'; // setting the height to 59px which is high enough for a single row of faces
-		} elseif ($espresso_facebook['espresso_facebook_layout'] == 'box_count') {
-			$button .= 'style="border:none; overflow:hidden; width: 46px;'; // setting the width to 46px, the width of the bubble/like button
-			$button .= 'height: 62px;"'; // setting the height to 62px, the height of the vertical box count
-		}
-		$button .= 'allowTransparency="true"></iframe>';
-		// that wasn't so hard, was it?
+
+			$button = '<div style="overflow:visible;" class="fb-like"';
+			$button .= ' data-href="' . urldecode($espresso_combined_url) . '"';
+			$button .= ' data-send="false"';
+			$button .= ' data-width="' . $espresso_facebook['espresso_facebook_width'] . '"';
+			$button .= ' data-show-faces="' . $espresso_facebook['espresso_facebook_faces'] . '"';
+			$button .= ' data-layout="' .$espresso_facebook['espresso_facebook_layout']. '"';
+			$button .= ' data-font="' .$espresso_facebook['espresso_facebook_font']. '"';
+			$button .= ' data-colorscheme="' .$espresso_facebook['espresso_facebook_colorscheme']. '"';
+
+
+			$button .= '></div>';
 
 		return $button;
 	}
 
 }
+
 
 /* * **********************
  * 	Twitter Button 		*
@@ -281,24 +302,7 @@ if (!function_exists('espresso_google_button')) {
 	}
 
 }
-/* * **************
- * Stumbleupon *
- * *************** */
-/* just say no to stumbleupon - cb #626
-  if (!function_exists('espresso_stumbleupon_button')) {
-  // Override this function using the Custom Files Addon (http://eventespresso.com/download/add-ons/custom-files-addon/)
-  function espresso_stumbleupon_button ($event_id){
-  global $wpdb, $org_options, $espresso_stumbleupon;
 
-  $registration_url = espresso_reg_url($event_id);
-  $size = $espresso_stumbleupon['espresso_stumbleupon_button_style'];
-
-  $button = '<script src="http://www.stumbleupon.com/hostedbadge.php?s=' . $size . '&r=' . $registration_url . '"></script>';
-
-  return $button;
-  }
-  }
- */
 //Social media buttons
 if (!function_exists('espresso_social_media_buttons')) {
 
