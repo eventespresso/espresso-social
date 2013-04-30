@@ -24,6 +24,7 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+
 //Define the version of the plugin
 function espresso_social_version() {
 	return '1.1.5';
@@ -87,6 +88,12 @@ $espresso_twitter = get_option('espresso_twitter_settings');
 global $espresso_google;
 $espresso_google = get_option('espresso_google_settings');
 
+global $espresso_org_options;
+$espresso_org_options = get_option('events_organization_settings');
+
+global $espresso_events_page;
+$espresso_events_page = get_post( $espresso_org_options['event_page_id'] );
+
 /**
  * espresso social install
  * @since 1.1
@@ -133,12 +140,34 @@ register_activation_hook(__FILE__, 'espresso_social_install');
 /**
  * espresso social insert to head
  * @author Dean Robinson
+ * @author Chris Reynolds
  * @since 1.1.5
- * this will add the FB scripts needed and a style for the comment box that pops up.
+ * this will add FB scripts needed and a style for the comment box that pops up.
+ * opengraph support added by Chris
  */
 function espresso_social_insert_to_head() {
+	global $espresso_events_page;
 	ob_start();
-	?>
+
+	// only do opengraph stuff if espresso_get_event exists
+	if ( function_exists('espresso_get_event') ) {
+		$event_id = str_replace('ee=', '', $_SERVER['QUERY_STRING']); // a hack to get the event id from the query string
+		$event = espresso_get_event( $event_id );
+		$event_meta = event_espresso_get_event_meta( $event_id );
+		?>
+		<!-- facebook open graph -->
+		<!-- added by espresso-social -->
+		<meta property="og:title" content="<?php echo $event->event_name; ?>"/>
+		<meta property="og:description" content="<?php echo wp_strip_all_tags( $event->event_desc, $remove_breaks = true ); ?>"/>
+		<meta property="og:url" content="<?php the_permalink( $espresso_events_page->ID ); echo '?ee=' . $event_id; ?>"/>
+		<?php if ( $event_meta['event_thumbnail_url'] ) { ?>
+			<meta property="og:image" content="<?php echo $event_meta['event_thumbnail_url']; ?>"/>
+		<?php } ?>
+		<meta property="og:type" content="website"/>
+		<meta property="og:site_name" content="<?php bloginfo('name'); ?>"/>
+		<!-- end event espresso facebook opengraph -->
+	<?php } ?>
+
 	<style>
 	.facebook-button div span iframe {
 	min-width:450px;
@@ -161,6 +190,7 @@ function espresso_social_insert_to_head() {
 }
 add_action ('wp_head', 'espresso_social_insert_to_head');
 
+
 /**
  * espresso facebook button
  * @author Chris Reynolds
@@ -172,11 +202,9 @@ add_action ('wp_head', 'espresso_social_insert_to_head');
 if (!function_exists('espresso_facebook_button')) {
 
 	function espresso_facebook_button($event_id) {
-		global $espresso_facebook;
+		global $espresso_facebook, $espresso_events_page;
 
-		$options = get_option('events_organization_settings'); // get the options
-		$events_page = $options['event_page_id']; // get the id of the event-registration page
-		$permalink = get_permalink( $events_page ); // feed that into the permalink
+		$permalink = get_permalink( $espresso_events_page->ID ); // get the id of the event-registration page
 		if ( is_ssl() ) {
 			$permalink = str_replace('http://', 'https://', $permalink); // replaces http with https if we're using ssl
 		}
