@@ -159,7 +159,7 @@ ob_start();
 	  var js, fjs = d.getElementsByTagName(s)[0];
 	  if (d.getElementById(id)) return;
 	  js = d.createElement(s); js.id = id;
-	  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=534432793275671_API KEY_d910ff3594b7d8764a70d0fc1110be4f";
+	  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=534432793275671";
 	  fjs.parentNode.insertBefore(js, fjs);
 	}(document, 'script', 'facebook-jssdk'));</script>
 <?php
