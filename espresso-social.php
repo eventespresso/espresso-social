@@ -177,8 +177,11 @@ add_action ('wp_head', 'espresso_insert_to_head');
 
 		$options = get_option('events_organization_settings'); // get the options
 		$events_page = $options['event_page_id']; // get the id of the event-registration page
-		$permalink = get_permalink( $events_page ); // feed that into the permalink, not sure how this will work with ssl...
-		$registration_url = $permalink . '?ee=' . $event_id; // this breaks if they aren't using pretty permalinks
+		$permalink = get_permalink( $events_page ); // feed that into the permalink
+		if ( is_ssl() ) {
+			$permalink = str_replace('http://', 'https://', $permalink); // replaces http with https if we're using ssl
+		}
+		$registration_url = $permalink . '?ee=' . $event_id; // this may break if they aren't using pretty permalinks
 		// new button
 
 			$button = '<div style="overflow:visible;" class="fb-like"';
