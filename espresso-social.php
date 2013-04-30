@@ -55,6 +55,13 @@ if (is_admin()) {
 	add_action('plugins_loaded', 'espresso_social_load_admin_file');
 }
 
+/**
+ * load admin file
+ * @author Sidney Harrell
+ * @since 1.1.4
+ * conditionally loads the admin screen based on the current version of Event Espresso
+ * this will be obsolete after we drop support for 3.1.x
+ */
 function espresso_social_load_admin_file() {
 	if ( function_exists('espresso_version') && espresso_version() >= '3.2' ){
 		require_once('social_admin.php');
@@ -80,12 +87,11 @@ $espresso_twitter = get_option('espresso_twitter_settings');
 global $espresso_google;
 $espresso_google = get_option('espresso_google_settings');
 
-/* just say no to stumbleupon - cb #626
-  global $espresso_stumbleupon;
-  $espresso_stumbleupon = get_option('espresso_stumbleupon_settings');
+/**
+ * espresso social install
+ * @since 1.1
+ * install the plugin
  */
-
-//Install the plugin
 function espresso_social_install() {
 	// Install Facebook Options
 	$espresso_facebook = array(
@@ -115,14 +121,6 @@ function espresso_social_install() {
 			'espresso_google_annotation' => 'bubble'
 	);
 	update_option('espresso_google_settings', $espresso_google);
-
-	// Install  stumbleupon options
-	/* just say no to stumbleupon - cb #626
-	  $espresso_stumbleupon = array(
-	  'espresso_stumbleupon_button_style' => '2',
-	  'espresso_stumbleupon_button_url' => ''
-	  );
-	  update_option('espresso_stumbleupon_settings', $espresso_stumbleupon); */
 }
 
 register_activation_hook(__FILE__, 'espresso_social_install');
@@ -131,22 +129,16 @@ register_activation_hook(__FILE__, 'espresso_social_install');
 /* * **********************
  * 	Facebook Button 	*
  * ********************** */
-/***
-*
-* fixed by Dean Robinson 14/03/2013
-*
-***************/
 
-if (!function_exists('espresso_facebook_button')) {
-
-
-
-function espresso_insert_to_head() {
-ob_start();
-
-// this will add the FB scripts needed and a style for the comment box that pops up.
-?>
-
+/**
+ * espresso social insert to head
+ * @author Dean Robinson
+ * @since 1.1.5
+ * this will add the FB scripts needed and a style for the comment box that pops up.
+ */
+function espresso_social_insert_to_head() {
+	ob_start();
+	?>
 	<style>
 	.facebook-button div span iframe {
 	min-width:450px;
@@ -162,17 +154,24 @@ ob_start();
 	  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=534432793275671";
 	  fjs.parentNode.insertBefore(js, fjs);
 	}(document, 'script', 'facebook-jssdk'));</script>
-<?php
+	<?php
 
-$espresso_fb_scripts = ob_get_clean();
-echo $espresso_fb_scripts;
-
+	$espresso_fb_scripts = ob_get_clean();
+	echo $espresso_fb_scripts;
 }
-add_action ('wp_head', 'espresso_insert_to_head');
+add_action ('wp_head', 'espresso_social_insert_to_head');
 
+/**
+ * espresso facebook button
+ * @author Chris Reynolds
+ * @author Dean Robinson
+ * @since 1.0
+ * controls the display and output of the facebook button
+ * Override this function using the Custom Files Addon (http://eventespresso.com/product/espresso-custom-files/)
+ */
+if (!function_exists('espresso_facebook_button')) {
 
 	function espresso_facebook_button($event_id) {
-		//Override this function using the Custom Files Addon (http://eventespresso.com/download/add-ons/custom-files-addon/)
 		global $espresso_facebook;
 
 		$options = get_option('events_organization_settings'); // get the options
@@ -205,18 +204,23 @@ add_action ('wp_head', 'espresso_insert_to_head');
 /* * **********************
  * 	Twitter Button 		*
  * ********************** */
+
+/**
+ * espresso twitter button
+ * @author Chris Reynolds
+ * @since 1.0
+ * controls the display and output of the twitter button
+ * rewritten in 1.1.4
+ * Override this function using the Custom Files Addon (http://eventespresso.com/product/espresso-custom-files/)
+ */
 if (!function_exists('espresso_twitter_button')) {
 
-	//OVerride this function using the Custom Files Addon (http://eventespresso.com/download/add-ons/custom-files-addon/)
 	function espresso_twitter_button($event_id) {
 		global $espresso_twitter;
 
 		//Build the URl to the page
 		$registration_url = espresso_reg_url($event_id); //get_option('siteurl') . '/?ee='. $event_id;
-		// this is also a pile of poo (but not quite so large), so we'll fix this one, too
-		/* old button
-		  $button = '<a href="http://twitter.com/share" class="twitter-share-button" data-url="' . $registration_url . '" data-text="' . $espresso_twitter['espresso_twitter_text'] . '" data-count="' . $espresso_twitter['espresso_twitter_count_box'] . '" data-via="' . $espresso_twitter['espresso_twitter_username'] . '" data-lang="' . $espresso_twitter['espresso_twitter_lang'] . '">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>';
-		 */
+
 		// new button
 		if (is_ssl()) {
 			$button = '<a href="https://twitter.com/share"';
@@ -278,9 +282,16 @@ if (!function_exists('espresso_twitter_button')) {
 /* * ****************
  * Google+1 button *
  * ***************** */
+
+/**
+ * espresso Google+ button
+ * @author Chris Reynolds
+ * @since 1.0
+ * controls the display and output of the G+ button
+ * Override this function using the Custom Files Addon (http://eventespresso.com/product/espresso-custom-files/)
+ */
 if (!function_exists('espresso_google_button')) {
 
-	// Override this function using the Custom Files Addon (http://eventespresso.com/download/add-ons/custom-files-addon/)
 	function espresso_google_button($event_id) {
 		global $espresso_google;
 
@@ -304,7 +315,12 @@ if (!function_exists('espresso_google_button')) {
 
 }
 
-//Social media buttons
+/**
+ * social media buttons
+ * @since 1.1
+ * returns the button data for espresso_social_display_buttons
+ * @see espresso_social_display_buttons
+ */
 if (!function_exists('espresso_social_media_buttons')) {
 
 	function espresso_social_media_buttons($event_id, $type = '') {
@@ -324,13 +340,6 @@ if (!function_exists('espresso_social_media_buttons')) {
 					return espresso_google_button($event_id);
 				}
 				break;
-			/* just say no to stumbleupon - cb #626
-			  case 'stumbleupon':
-			  if (function_exists('espresso_stumbleupon_button')) {
-			  return espresso_stumbleupon_button($event_id);
-			  }
-			  break;
-			 */
 			default:
 				break;
 		}
@@ -338,6 +347,11 @@ if (!function_exists('espresso_social_media_buttons')) {
 
 }
 
+/**
+ * display buttons
+ * gets the options for the buttons and spits them out onto the page
+ * @since 1.1
+ */
 function espresso_social_display_buttons($event_id) {
 	/*
 	  fetching the options here so I can output the alignment of each button and apply some conditional styling based on the orientation of the button
@@ -350,9 +364,6 @@ function espresso_social_display_buttons($event_id) {
 	if (espresso_social_media_buttons($event_id, 'twitter')) {
 		echo '<span class="twitter-button ee-social-media-button ' . $espresso_social_twitter['espresso_twitter_count_box'] . '">' . espresso_social_media_buttons($event_id, 'twitter') . '</span>';
 	}
-	/* just say no to stumbleupon - cb #626
-	  if( espresso_social_media_buttons($event_id, 'stumbleupon')) { echo '<span class="stumbleupon-button ee-social-media-button">'.espresso_social_media_buttons($event_id, 'stumbleupon').'</span>'; }
-	 */
 	if (espresso_social_media_buttons($event_id, 'google')) {
 		echo '<div class="google-button ee-social-media-button ' . $espresso_social_google['espresso_google_button_size'] . '">' . espresso_social_media_buttons($event_id, 'google') . '</div>';
 	}
