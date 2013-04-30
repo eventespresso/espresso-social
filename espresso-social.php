@@ -6,9 +6,9 @@
   Version: 1.1.5
   Usage: Add <?php echo espresso_show_social_media($event_id, 'twitter');?> and/or <?php echo espresso_show_social_media($event_id, 'facebook');?> to display  Twitter or Facebook buttons in your event templates.
   Example: <p><?php echo espresso_show_social_media($event_id, 'twitter');?> <?php echo espresso_show_social_media($event_id, 'facebook');?></p>
-  Author: Seth Shoultes
-  Author URI: http://www.shoultes.net
-  Copyright 2010  Seth Shoultes  (email : seth@eventespresso.com)
+  Author: Event Espresso
+  Author URI: http://www.eventespresso.com
+  Copyright 2013  Event Espresso  (email : support@eventespresso.com)
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License, version 2, as
