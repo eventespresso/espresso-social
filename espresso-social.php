@@ -175,16 +175,14 @@ add_action ('wp_head', 'espresso_insert_to_head');
 		//Override this function using the Custom Files Addon (http://eventespresso.com/download/add-ons/custom-files-addon/)
 		global $espresso_facebook;
 
+		$options = get_option('events_organization_settings'); // get the options
+		$events_page = $options['event_page_id']; // get the id of the event-registration page
+		$permalink = get_permalink( $events_page ); // feed that into the permalink, not sure how this will work with ssl...
 		$registration_url = $permalink . '?ee=' . $event_id; // this breaks if they aren't using pretty permalinks
-		//http://kovshenin.com/2012/current-url-in-wordpress/
-		global $wp;
-		$espresso_url = add_query_arg( $wp->query_string, '', home_url( $wp->request ) );
-		$espresso_combined_url = $espresso_url . $registration_url;
-
 		// new button
 
 			$button = '<div style="overflow:visible;" class="fb-like"';
-			$button .= ' data-href="' . urldecode($espresso_combined_url) . '"';
+			$button .= ' data-href="' . urldecode($registration_url) . '"';
 			$button .= ' data-send="false"';
 			$button .= ' data-width="' . $espresso_facebook['espresso_facebook_width'] . '"';
 			$button .= ' data-show-faces="' . $espresso_facebook['espresso_facebook_faces'] . '"';
