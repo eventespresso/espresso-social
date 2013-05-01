@@ -146,22 +146,26 @@ register_activation_hook(__FILE__, 'espresso_social_install');
  * opengraph support added by Chris
  */
 function espresso_social_insert_to_head() {
-	global $espresso_events_page;
+	global $espresso_events_page, $event_meta;
 	ob_start();
 
 	// only do opengraph stuff if espresso_get_event exists
 	if ( function_exists('espresso_get_event') ) {
 		$event_id = str_replace('ee=', '', $_SERVER['QUERY_STRING']); // a hack to get the event id from the query string
 		$event = espresso_get_event( $event_id );
-		$event_meta = event_espresso_get_event_meta( $event_id );
+		if ( array_key_exists( 'event_thumbnail_url', $event_meta ) ) {
+			$event_thumbnail_url = $event_meta['event_thumbnail_url'];
+		} else {
+			$event_thumbnail_url = null;
+		}
 		?>
 		<!-- facebook open graph -->
 		<!-- added by espresso-social -->
 		<meta property="og:title" content="<?php echo $event->event_name; ?>"/>
 		<meta property="og:description" content="<?php echo wp_strip_all_tags( $event->event_desc, $remove_breaks = true ); ?>"/>
 		<meta property="og:url" content="<?php the_permalink( $espresso_events_page->ID ); echo '?ee=' . $event_id; ?>"/>
-		<?php if ( $event_meta['event_thumbnail_url'] ) { ?>
-			<meta property="og:image" content="<?php echo $event_meta['event_thumbnail_url']; ?>"/>
+		<?php if ( $event_thumbnail_url ) { ?>
+			<meta property="og:image" content="<?php echo $event_thumbnail_url; ?>"/>
 		<?php } ?>
 		<meta property="og:type" content="website"/>
 		<meta property="og:site_name" content="<?php bloginfo('name'); ?>"/>
