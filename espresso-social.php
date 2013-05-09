@@ -152,25 +152,27 @@ function espresso_social_insert_to_head() {
 	// only do opengraph stuff if espresso_get_event exists
 	if ( function_exists('espresso_get_event') ) {
 		$event_id = str_replace('ee=', '', $_SERVER['QUERY_STRING']); // a hack to get the event id from the query string
-		$event = espresso_get_event( $event_id );
-		if ( array_key_exists( 'event_thumbnail_url', $event_meta ) ) {
+		if ( $event_meta && array_key_exists( 'event_thumbnail_url', $event_meta ) ) {
 			$event_thumbnail_url = $event_meta['event_thumbnail_url'];
 		} else {
 			$event_thumbnail_url = null;
 		}
-		?>
-		<!-- facebook open graph -->
-		<!-- added by espresso-social -->
-		<meta property="og:title" content="<?php echo $event->event_name; ?>"/>
-		<meta property="og:description" content="<?php echo wp_strip_all_tags( $event->event_desc, $remove_breaks = true ); ?>"/>
-		<meta property="og:url" content="<?php the_permalink( $espresso_events_page->ID ); echo '?ee=' . $event_id; ?>"/>
-		<?php if ( $event_thumbnail_url ) { ?>
-			<meta property="og:image" content="<?php echo $event_thumbnail_url; ?>"/>
-		<?php } ?>
-		<meta property="og:type" content="website"/>
-		<meta property="og:site_name" content="<?php bloginfo('name'); ?>"/>
-		<!-- end event espresso facebook opengraph -->
-	<?php } ?>
+		if ( $event_id ) { // if there's an event id...do stuff...
+			$event = espresso_get_event( $event_id );
+			?>
+			<!-- facebook open graph -->
+			<!-- added by espresso-social -->
+			<meta property="og:title" content="<?php echo $event->event_name; ?>"/>
+			<meta property="og:description" content="<?php echo wp_strip_all_tags( $event->event_desc, $remove_breaks = true ); ?>"/>
+			<meta property="og:url" content="<?php the_permalink( $espresso_events_page->ID ); echo '?ee=' . $event_id; ?>"/>
+			<?php if ( $event_thumbnail_url ) { ?>
+				<meta property="og:image" content="<?php echo $event_thumbnail_url; ?>"/>
+			<?php } ?>
+			<meta property="og:type" content="website"/>
+			<meta property="og:site_name" content="<?php bloginfo('name'); ?>"/>
+			<!-- end event espresso facebook opengraph -->
+			<?php }
+	} ?>
 
 	<style>
 	.facebook-button div span iframe {
