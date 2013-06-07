@@ -3,7 +3,7 @@
   Plugin Name: Event Espresso - Social Media
   Plugin URI: http://www.eventespresso.com
   Description: A social media addon for Event Espresso. Includes includes Facebook and Twitter share buttons.
-  Version: 1.1.5
+  Version: 1.1.5.1
   Usage: Add <?php echo espresso_show_social_media($event_id, 'twitter');?> and/or <?php echo espresso_show_social_media($event_id, 'facebook');?> to display  Twitter or Facebook buttons in your event templates.
   Example: <p><?php echo espresso_show_social_media($event_id, 'twitter');?> <?php echo espresso_show_social_media($event_id, 'facebook');?></p>
   Author: Event Espresso
@@ -27,7 +27,7 @@
 
 //Define the version of the plugin
 function espresso_social_version() {
-	return '1.1.5';
+	return '1.1.5.1';
 }
 
 //Update notifications
