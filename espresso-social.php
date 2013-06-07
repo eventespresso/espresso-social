@@ -152,7 +152,12 @@ function espresso_social_insert_to_head() {
 	// only do opengraph stuff if espresso_get_event exists
 	if ( function_exists('espresso_get_event') ) {
 		$event_id = str_replace('ee=', '', $_SERVER['QUERY_STRING']); // a hack to get the event id from the query string
+		if ( empty( $event_id ) ) return; //get out this isn't an ee page.
 		$event = espresso_get_event( $event_id );
+
+		//one more sanity check
+		if ( empty( $event ) ) return; //get out we don't have an event.
+
 		if ( array_key_exists( 'event_thumbnail_url', $event_meta ) ) {
 			$event_thumbnail_url = $event_meta['event_thumbnail_url'];
 		} else {
