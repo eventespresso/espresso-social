@@ -131,7 +131,18 @@ function espresso_social_install() {
 }
 
 register_activation_hook(__FILE__, 'espresso_social_install');
-
+/**
+ *         captures plugin activation errors for debugging
+ *
+ *         @access public
+ *         @return void
+ */
+function espresso_social_plugin_activation_errors() {
+    if ( WP_DEBUG === TRUE ) {
+        file_put_contents( WP_CONTENT_DIR. '/uploads/espresso/logs/espresso_social_plugin_activation_errors.html', ob_get_contents() );
+    }    
+}
+add_action('activated_plugin', 'espresso_social_plugin_activation_errors'); 
 
 /* * **********************
  * 	Facebook Button 	*
