@@ -3,7 +3,7 @@
   Plugin Name: Event Espresso - Social Media
   Plugin URI: http://www.eventespresso.com
   Description: A social media addon for Event Espresso. Includes includes Facebook and Twitter share buttons.
-  Version: 1.1.5.1
+  Version: 1.1.6.b
   Usage: Add <?php echo espresso_show_social_media($event_id, 'twitter');?> and/or <?php echo espresso_show_social_media($event_id, 'facebook');?> to display  Twitter or Facebook buttons in your event templates.
   Example: <p><?php echo espresso_show_social_media($event_id, 'twitter');?> <?php echo espresso_show_social_media($event_id, 'facebook');?></p>
   Author: Event Espresso
@@ -27,7 +27,7 @@
 
 //Define the version of the plugin
 function espresso_social_version() {
-	return '1.1.5.1';
+	return '1.1.6.b';
 }
 
 //Update notifications
@@ -41,13 +41,18 @@ function ee_social_load_pue_update() {
 		require(EVENT_ESPRESSO_PLUGINFULLPATH . 'class/pue/pue-client.php' );
 		$api_key = $org_options['site_license_key'];
 		$host_server_url = 'http://eventespresso.com';
-		$plugin_slug = 'espresso-social';
+		$plugin_slug = array(
+			'premium' => array('p' => 'espresso-social'),
+			'prerelease' => array('b' => 'espresso-social-pr')
+			);
 		$options = array(
 			'apikey' => $api_key,
 			'lang_domain' => 'event_espresso',
 			'checkPeriod' => '24',
 			'option_key' => 'site_license_key',
-			'options_page_slug' => 'event_espresso'
+			'options_page_slug' => 'event_espresso',
+			'plugin_basename' => plugin_basename(EVENT_ESPRESSO_PLUGINPATH),
+			'use_wp_update' => FALSE, //if TRUE then you want FREE versions of the plugin to be updated from WP
 		);
 		$check_for_updates = new PluginUpdateEngineChecker($host_server_url, $plugin_slug, $options); //initiate the class and start the plugin update engine!
 	}
