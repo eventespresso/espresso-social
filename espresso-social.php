@@ -167,7 +167,12 @@ function espresso_social_insert_to_head() {
 
 	// only do opengraph stuff if espresso_get_event exists
 	if ( function_exists('espresso_get_event') ) {
-		$event_id = str_replace('ee=', '', $_SERVER['QUERY_STRING']); // a hack to get the event id from the query string
+		global $this_event_id;
+
+		if (isset($this_event_id) && !empty($this_event_id)){
+			$event_id = $this_event_id;
+		}
+		
 		if ( empty( $event_id ) ) return; //get out this isn't an ee page.
 		$event = espresso_get_event( $event_id );
 
@@ -225,7 +230,7 @@ add_action ('wp_head', 'espresso_social_insert_to_head');
  * @author Dean Robinson
  * @since 1.0
  * controls the display and output of the facebook button
- * Override this function using the Custom Files Addon (http://eventespresso.com/product/espresso-custom-files/)
+ * Override this function using a custom functionality plugin (http://ottopress.com/2011/creating-a-site-specific-snippets-plugin/)
  */
 if (!function_exists('espresso_facebook_button')) {
 
@@ -236,7 +241,11 @@ if (!function_exists('espresso_facebook_button')) {
 		if ( is_ssl() ) {
 			$permalink = str_replace('http://', 'https://', $permalink); // replaces http with https if we're using ssl
 		}
-		$registration_url = $permalink . '?ee=' . $event_id; // this may break if they aren't using pretty permalinks
+		if (!empty($_GET['event_id'])) {
+			$registration_url = $permalink . '?regevent_action=register&event_id=' . $event_id;
+		} else {
+			$registration_url = $permalink . '?ee=' . $event_id;
+		}
 		// new button
 
 			$button = '<div style="overflow:visible;" class="fb-like"';
@@ -267,7 +276,7 @@ if (!function_exists('espresso_facebook_button')) {
  * @since 1.0
  * controls the display and output of the twitter button
  * rewritten in 1.1.4
- * Override this function using the Custom Files Addon (http://eventespresso.com/product/espresso-custom-files/)
+ * Override this function using a custom functionality plugin (http://ottopress.com/2011/creating-a-site-specific-snippets-plugin/)
  */
 if (!function_exists('espresso_twitter_button')) {
 
@@ -344,7 +353,7 @@ if (!function_exists('espresso_twitter_button')) {
  * @author Chris Reynolds
  * @since 1.0
  * controls the display and output of the G+ button
- * Override this function using the Custom Files Addon (http://eventespresso.com/product/espresso-custom-files/)
+ * Override this function using a custom functionality plugin (http://ottopress.com/2011/creating-a-site-specific-snippets-plugin/)
  */
 if (!function_exists('espresso_google_button')) {
 
